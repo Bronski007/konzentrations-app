@@ -11,7 +11,7 @@ const Home = () => (
     <Typography
       variant="h4"
     >
-      Welcome to the App
+      Test
     </Typography>
   </Stack>
 )
