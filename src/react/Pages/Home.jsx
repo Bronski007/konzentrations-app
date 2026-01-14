@@ -16,7 +16,7 @@ const Home = () => {
         width: '100%'
       }}
     >
-      <TopNavigationBar />
+      <TopNavigationBar name="Todo Planner" />
       <Stack
         flex="1 1 auto"
         direction="column"
@@ -32,7 +32,7 @@ const Home = () => {
           onClick={() => navigate('/Task')}
           sx={{
             width: '60%',
-            marginBottom: '30px'
+            marginBottom: '4%'
           }}
         >
           Create Task

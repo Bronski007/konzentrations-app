@@ -22,7 +22,7 @@ const AppLayout = () => (
     }}
   >
     <Container
-      maxWidth="sm"
+      maxWidth="xs"
       disableGutters
       sx={{
         display: 'flex',
