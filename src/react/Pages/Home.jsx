@@ -1,35 +1,45 @@
 import React from 'react'
 
-import { Stack, Typography, Divider } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
+import { Stack, Button } from '@mui/material'
 
-const Home = () => (
-  <Stack
-    flex="1 1 auto"
-    direction="column"
-    sx={{
-      width: '100%',
-      background: '#ccecfa'
-    }}
-  >
-    <Typography
-      variant="h4"
+import TopNavigationBar from '../TopNavigationBar'
+
+const Home = () => {
+  const navigate = useNavigate()
+  return (
+    <Stack
+      flex="1 1 auto"
+      direction="column"
+      alignItems="center"
       sx={{
-        width: 600,
-        padding: '20px',
-        background: '#35afea',
-        fontWeight: 700
+        width: '100%'
       }}
     >
-      Todo-planner
-    </Typography>
-    <Divider
-      flexItem
-      sx={{
-        borderBottomWidth: 3,
-        background: '#039be5'
-      }}
-    />
-  </Stack>
-)
+      <TopNavigationBar />
+      <Stack
+        flex="1 1 auto"
+        direction="column"
+        justifyContent="flex-end"
+        alignItems="center"
+        sx={{
+          width: '100%',
+          bgcolor: 'primary.contrastText'
+        }}
+      >
+        <Button
+          variant="contained"
+          onClick={() => navigate('/Task')}
+          sx={{
+            width: '60%',
+            marginBottom: '30px'
+          }}
+        >
+          Create Task
+        </Button>
+      </Stack>
+    </Stack>
+  )
+}
 
 export default Home
