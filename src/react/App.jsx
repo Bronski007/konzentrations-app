@@ -39,7 +39,7 @@ const appTheme = createTheme({
       dark: 'rgb(44, 56, 126)',
       contrastText: '#fff'
     },
-    secondary: { main: '#f50057' }
+    secondary: { main: '#722093' }
   }
 })
 

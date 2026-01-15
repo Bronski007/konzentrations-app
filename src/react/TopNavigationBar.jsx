@@ -45,6 +45,7 @@ const TopNavigationBar = ({ name }) => {
         flexItem
         sx={{
           borderBottomWidth: 3,
+          marginBottom: 2,
           bgcolor: 'primary.light'
         }}
       />
