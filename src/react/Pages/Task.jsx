@@ -1,10 +1,20 @@
 import React from 'react'
 
-import { Stack, TextField } from '@mui/material'
+import { Stack, TextField, Button } from '@mui/material'
 
 import TopNavigationBar from '../TopNavigationBar'
+import usePersistTask from '../../hooks/usePersistTask'
 
-function createInput(item) {
+function persistTask() {
+  {/* 
+    - takes the input from all fields and stores them in an array
+    - calls usePersistTask() to persist the data
+    - validate the input?
+  */}
+  usePersistTask()
+}
+
+function createInputField(item) {
   return (
     <TextField
       key={item}
@@ -17,21 +27,38 @@ function createInput(item) {
 }
 
 const Task = () => {
-  const items = ['name', 'deadline', 'approximated time']
+  const items = ['topic', 'task name', 'deadline', 'approximated time']
   return (
     <Stack
       flex="1 1 auto"
-      sx={{
-        width: '100%'
-      }}
+      alignItems="center"
+      sx={{ width: '100%' }}
     >
       <TopNavigationBar name="Task" />
+
       <Stack
         flex="1 1 auto"
+        sx={{ width: '90%' }}
         spacing={2}
       >
-        {items.map(createInput)}
+        {items.map(createInputField)}
+        <TextField
+          label="Description of your task"
+          color="secondary"
+          multiline
+          rows={5}
+        />
       </Stack>
+      <Button
+        variant="contained"
+        onClick={() => persistTask}
+        sx={{
+          width: '60%',
+          marginBottom: '4%'
+        }}
+      >
+        Create Task
+      </Button>
     </Stack>
   )
 }
