@@ -1,33 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { Stack, TextField, Button } from '@mui/material'
 
 import TopNavigationBar from '../TopNavigationBar'
-import usePersistTask from '../../hooks/usePersistTask'
-
-function persistTask() {
-  {/* 
-    - takes the input from all fields and stores them in an array
-    - calls usePersistTask() to persist the data
-    - validate the input?
-  */}
-  usePersistTask()
-}
-
-function createInputField(item) {
-  return (
-    <TextField
-      key={item}
-      label={item}
-      size="small"
-      color="secondary"
-      required
-    />
-  )
-}
 
 const Task = () => {
-  const items = ['topic', 'task name', 'deadline', 'approximated time']
+  const initialItems = [
+    { key: 0, value: '', name: 'topic' },
+    { key: 1, value: '', name: 'task name' },
+    { key: 2, value: '', name: 'deadline' },
+    { key: 3, value: '', name: 'approximated time' }
+  ]
+
+  const [items, setItems] = useState(initialItems)
+
   return (
     <Stack
       flex="1 1 auto"
@@ -41,7 +27,22 @@ const Task = () => {
         sx={{ width: '90%' }}
         spacing={2}
       >
-        {items.map(createInputField)}
+        {items.map((item) => (
+          <TextField
+            key={item.key}
+            label={item.name}
+            value={item.value}
+            size="small"
+            color="secondary"
+            onChange={(event) => {
+              const newItems = [...items]
+              newItems[item.key].value = event.target.value
+              setItems(newItems)
+            }}
+            required
+          />
+        ))}
+
         <TextField
           label="Description of your task"
           color="secondary"
@@ -49,9 +50,9 @@ const Task = () => {
           rows={5}
         />
       </Stack>
+
       <Button
         variant="contained"
-        onClick={() => persistTask}
         sx={{
           width: '60%',
           marginBottom: '4%'
