@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { useNavigate } from 'react-router-dom'
-import { Stack, Typography, Divider, IconButton } from '@mui/material'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import { Stack, Typography, Divider, IconButton, Box } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
 
 const TopNavigationBar = ({ name }) => {
   const navigate = useNavigate()
@@ -11,7 +11,7 @@ const TopNavigationBar = ({ name }) => {
   const isRoot = location === '/'
 
   return (
-    <>
+    <Box sx={{ position: 'sticky', top: 0, zIndex: 10000 }}>
       <Stack
         display="flex"
         direction="row"
@@ -27,7 +27,7 @@ const TopNavigationBar = ({ name }) => {
           <IconButton
             onClick={() => navigate(-1)}
           >
-            <ArrowBackIcon
+            <CloseIcon
               sx={{ color: 'primary.contrastText' }}
             />
           </IconButton>
@@ -35,7 +35,7 @@ const TopNavigationBar = ({ name }) => {
 
         <Typography
           variant="h4"
-          sx={{ fontWeight: 700 }}
+          sx={{ fontWeight: 700, overflow: 'auto', whiteSpace: 'nowrap', scrollbarWidth: 'none' }}
         >
           {name}
         </Typography>
@@ -48,7 +48,7 @@ const TopNavigationBar = ({ name }) => {
           bgcolor: 'primary.light'
         }}
       />
-    </>
+    </Box>
   )
 }
 
