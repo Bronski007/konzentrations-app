@@ -1,7 +1,9 @@
 const usePersistTask = () => {
-{/* Contains logic to persist a task in localStorage:
-    -> requires an array of all task fields
-*/}
+  const persist = (task) => {
+    localStorage.setItem('value', JSON.stringify(task))
+  }
+
+  return persist
 }
 
 export default usePersistTask

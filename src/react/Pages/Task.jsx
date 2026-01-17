@@ -3,15 +3,17 @@ import React, { useState } from 'react'
 import { Stack, TextField, Button } from '@mui/material'
 
 import TopNavigationBar from '../TopNavigationBar'
+import usePersistTask from '../../hooks/usePersistTask'
 
 const Task = () => {
   const initialItems = [
     { key: 0, value: '', name: 'topic' },
-    { key: 1, value: '', name: 'task name' },
+    { key: 1, value: '', name: 'name' },
     { key: 2, value: '', name: 'deadline' },
-    { key: 3, value: '', name: 'approximated time' }
+    { key: 3, value: '', name: 'approximated time' },
+    { key: 4, value: '', name: 'description', rows: 5 }
   ]
-
+  const persistTask = usePersistTask()
   const [items, setItems] = useState(initialItems)
 
   return (
@@ -32,6 +34,8 @@ const Task = () => {
             key={item.key}
             label={item.name}
             value={item.value}
+            multiline={item.rows > 1}
+            rows={item.rows ?? 1}
             size="small"
             color="secondary"
             onChange={(event) => {
@@ -42,17 +46,11 @@ const Task = () => {
             required
           />
         ))}
-
-        <TextField
-          label="Description of your task"
-          color="secondary"
-          multiline
-          rows={5}
-        />
       </Stack>
 
       <Button
         variant="contained"
+        onClick={() => persistTask(items)}
         sx={{
           width: '60%',
           marginBottom: '4%'
