@@ -16,7 +16,6 @@ const TopNavigationBar = ({ name }) => {
       <Stack
         display="flex"
         direction="row"
-        spacing={2}
         sx={{
           width: '100%',
           padding: '2% 3%',
