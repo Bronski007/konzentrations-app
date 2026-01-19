@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 
+import { useNavigate } from 'react-router-dom'
 import { Stack, TextField, Button } from '@mui/material'
 
 import TopNavigationBar from '../TopNavigationBar'
@@ -13,8 +14,10 @@ const Task = () => {
     { key: 3, value: '', name: 'approximated time' },
     { key: 4, value: '', name: 'description', rows: 5 }
   ]
-  const persistTask = usePersistTask()
   const [items, setItems] = useState(initialItems)
+
+  const persistTask = usePersistTask()
+  const navigate = useNavigate()
 
   return (
     <Stack
@@ -43,14 +46,16 @@ const Task = () => {
               newItems[item.key].value = event.target.value
               setItems(newItems)
             }}
-            required
           />
         ))}
       </Stack>
 
       <Button
         variant="contained"
-        onClick={() => persistTask(items)}
+        onClick={() => {
+          persistTask(items)
+          navigate(-1)
+        }}
         sx={{
           width: '60%',
           marginBottom: '4%'
