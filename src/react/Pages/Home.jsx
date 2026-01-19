@@ -1,7 +1,8 @@
 import React from 'react'
 
 import { useNavigate } from 'react-router-dom'
-import { Stack, Button } from '@mui/material'
+import { Stack, Fab } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
 
 import TopNavigationBar from '../TopNavigationBar'
 
@@ -24,7 +25,7 @@ const Home = () => {
       title: "Math Homework",
       description: "Finish tasks 2 to 6 from chapter 4 and check solutions.",
       date: "2026-01-15",
-      complexity: 7
+      complexity: 10
     }
   ];
 
@@ -48,6 +49,7 @@ const Home = () => {
           bgcolor: 'primary.contrastText',
           paddingTop: 2,
           paddingBottom: 2,
+          position: 'relative', // for positioning the FAB
         }}
       >
 
@@ -63,23 +65,28 @@ const Home = () => {
             paddingBottom: 2,
           }}
         >
-          {notes.map((note => (
+          {notes.map((note) => (
             <NoteCard key={note.id} note={note} />
-          )))}
+          ))}
         </Stack>
 
-          {/*Create (+) Button (Frame 1,3,...) */}
+        {/*Create (+) Fab (Frame 1,3,...) */}
 
-        <Button
-          variant="contained"
-          onClick={() => navigate('/Task')}
+        <Fab
+          color="primary"
+          onClick={() => navigate("/Task")}
           sx={{
-            width: '60%',
-            marginBottom: '4%'
+            position: 'absolute',
+            bottom: 16,
+            right: 16,
           }}
+          aria-label="add task"
         >
-          Create Task
-        </Button>
+          <AddIcon />
+        </Fab>
+
+
+        
       </Stack>
     </Stack>
   )

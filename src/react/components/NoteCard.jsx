@@ -2,6 +2,9 @@ import React from "react";
 
 import { Stack, Typography} from "@mui/material";
 
+
+
+
 const NoteCard = ({ note }) => {
     const isHard = Number(note.complexity) >= 8
     return (
