@@ -1,14 +1,15 @@
 import React from 'react'
 
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { Stack, Typography, Divider, IconButton, Box } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
+import PropTypes from 'prop-types'
 
 const TopNavigationBar = ({ name }) => {
   const navigate = useNavigate()
 
-  const location = window.location.pathname
-  const isRoot = location === '/'
+  const location = useLocation()
+  const isRoot = location.pathname === '/'
 
   return (
     <Box sx={{ position: 'sticky', top: 0, zIndex: 10000 }}>
@@ -45,11 +46,16 @@ const TopNavigationBar = ({ name }) => {
         flexItem
         sx={{
           borderBottomWidth: 3,
+          marginBottom: 2,
           bgcolor: 'primary.light'
         }}
       />
     </Box>
   )
+}
+
+TopNavigationBar.propTypes = {
+  name: PropTypes.string.isRequired
 }
 
 export default TopNavigationBar

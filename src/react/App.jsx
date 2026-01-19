@@ -2,9 +2,7 @@ import React from 'react'
 
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter as Router } from 'react-router-dom'
-
 import { CssBaseline } from '@mui/material'
-
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 import AppLayout from './AppLayout'
@@ -39,7 +37,7 @@ const appTheme = createTheme({
       dark: 'rgb(44, 56, 126)',
       contrastText: '#fff'
     },
-    secondary: { main: '#f50057' }
+    secondary: { main: '#722093' }
   }
 })
 
