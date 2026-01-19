@@ -2,11 +2,16 @@ import React from "react";
 
 import { Stack, Typography} from "@mui/material";
 
-
+const getColorByComplexity = (complexity) => {
+    if (complexity <= 3) return '#bae6fd' // very easy (light blue)
+    if (complexity <= 5) return '#7dd3fc' // easy (blue)
+    if (complexity <= 7) return '#fde68a' // medium (yellow)
+    if (complexity <= 9) return '#fca5a5' // hard (light red)
+    return '#ef4444' // very hard (red)
+}
 
 
 const NoteCard = ({ note }) => {
-    const isHard = Number(note.complexity) >= 8
     return (
         <Stack
             direction="column"
@@ -15,7 +20,7 @@ const NoteCard = ({ note }) => {
                 width: '90%',
                 borderRadius: 2,
                 padding: 1.5,
-                bgcolor: isHard ? '#ff6b6b' : '#7dd3fc',
+                bgcolor:getColorByComplexity(Number(note.complexity)),
                 color: '#0f172a'
             }}
         >
