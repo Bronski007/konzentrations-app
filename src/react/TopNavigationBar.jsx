@@ -1,14 +1,15 @@
 import React from 'react'
 
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { Stack, Typography, Divider, IconButton } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import PropTypes from 'prop-types'
 
 const TopNavigationBar = ({ name }) => {
   const navigate = useNavigate()
 
-  const location = window.location.pathname
-  const isRoot = location === '/'
+  const location = useLocation()
+  const isRoot = location.pathname === '/'
 
   return (
     <>
@@ -45,11 +46,16 @@ const TopNavigationBar = ({ name }) => {
         flexItem
         sx={{
           borderBottomWidth: 3,
+          marginBottom: 2,
           bgcolor: 'primary.light'
         }}
       />
     </>
   )
+}
+
+TopNavigationBar.propTypes = {
+  name: PropTypes.string.isRequired
 }
 
 export default TopNavigationBar
