@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
+import { nanoid } from 'nanoid'
 import { useNavigate } from 'react-router-dom'
 import { Stack, TextField, Button } from '@mui/material'
 
 import TopNavigationBar from '../TopNavigationBar'
-import usePersistTask from '../../hooks/usePersistTask'
 
 const Task = () => {
   const initialItems = [
@@ -16,7 +16,6 @@ const Task = () => {
   ]
   const [items, setItems] = useState(initialItems)
 
-  const persistTask = usePersistTask()
   const navigate = useNavigate()
 
   return (
@@ -53,7 +52,8 @@ const Task = () => {
       <Button
         variant="contained"
         onClick={() => {
-          persistTask(items)
+          const id = nanoid()
+          localStorage.setItem(id, JSON.stringify(items))
           navigate(-1)
         }}
         sx={{
