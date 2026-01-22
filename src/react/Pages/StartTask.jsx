@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { Box, Stack, Typography, Card, CardContent, Button, Rating, Fab } from '@mui/material'
+import { Box, Stack, Typography, Card, CardContent, Button, Rating, Fab, ToggleButton, ToggleButtonGroup } from '@mui/material'
 import CircleIcon from '@mui/icons-material/Circle'
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
@@ -7,8 +7,9 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 
 import TopNavigationBar from '../TopNavigationBar'
+import Timer from './Timer/Timer'
 
-const StartTask = ({ name = 'Mathe Klausur', description = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Non officiis reiciendis et iste officia enim aspernatur quam autem veritatis voluptas blanditiis, explicabo accusantium laboriosam illo minima voluptate, optio quae omnis?', complexity = 7, duration = 90 }) => {
+const StartTask = ({ name = 'Mathe Klausur', description = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Non officiis reiciendis et iste officia enim aspernatur quam autem veritatis voluptas blanditiis, explicabo accusantium laboriosam illo minima voluptate, optio quae omnis?', complexity = 7, duration = 5}) => {
   const [timerStarted, setTimerStarted] = useState(false)
   const [atPageTop, setAtPageTop] = useState(true)
   const timerRef = useRef(null)
@@ -23,6 +24,13 @@ const StartTask = ({ name = 'Mathe Klausur', description = 'Lorem ipsum dolor si
       setAtPageTop(true)
     }
   }
+
+  const [studyTechnique, setStudyTechnique] = React.useState('pomodoro');
+    const handleTechnique = (event, newTechnique) => {
+      if (newTechnique !== null) {
+        setStudyTechnique(newTechnique);
+      }
+    };
 
   const startTimer = () => {
     setTimerStarted(true)
@@ -65,6 +73,22 @@ const StartTask = ({ name = 'Mathe Klausur', description = 'Lorem ipsum dolor si
                 <Typography variant="body1" sx={{ overflow: 'auto', scrollbarWidth: 'none', maxHeight: '20vh' }}>{description}</Typography>
               </CardContent>
             </Card>
+            <ToggleButtonGroup
+              color={timerStarted? 'standard':'primary'}
+              value={studyTechnique}
+              exclusive
+              onChange={handleTechnique}
+              aria-label="study-technique"
+              disabled = {timerStarted}
+              size='small'
+            >
+              <ToggleButton value="pomodoro" aria-label="left">
+                <Typography variant="button" gutterBottom>pomodoro</Typography>
+              </ToggleButton>
+                <ToggleButton value="flow" aria-label="right">
+                <Typography variant="button" gutterBottom>flow</Typography>
+              </ToggleButton>
+            </ToggleButtonGroup>
             <Button sx={{ borderRadius: '2rem' }} variant="contained" fullWidth endIcon={<PlayArrowIcon />} onClick={startTimer} disabled={timerStarted}>
               <Typography variant="button">Start</Typography>
             </Button>
@@ -95,9 +119,9 @@ const StartTask = ({ name = 'Mathe Klausur', description = 'Lorem ipsum dolor si
             atPageTop &&
             <Box sx={{ height: '7rem' }} />
           }
-          <Card sx={{ borderRadius: '2rem', width: '100%', position: 'relative', top: '-5rem' }}>
+          <Card sx={{ borderRadius: '2rem', width: '100%', position: 'relative', top: '-5rem', display:'flex', justifyContent:'center'}}>
             <CardContent ref={timerRef}>
-              <Typography variant="h1" sx={{ textAlign: 'center' }}>00:00</Typography>
+              <Timer studyTechnique= {studyTechnique} studyDuration = {duration} learningIntervalTime = {0.8} breakIntervalTime = {0.2}/>  
             </CardContent>
           </Card>
           <Box />
