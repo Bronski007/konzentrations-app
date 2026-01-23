@@ -8,8 +8,6 @@ const PomodoroTimer = ({ studyDuration, learningIntervalTime, breakIntervalTime 
   const [TimeLeft, setTimeLeft] = useState(studyDuration)
   const [isBreak, setBreak] = useState(false)
 
-  console.log(displayTime(time))
-
   useEffect(() => {
     if (TimeLeft > 0) {
       const interval = setInterval(() => {
