@@ -20,21 +20,15 @@ const Home = () => {
     >
       <TopNavigationBar name="Todo Planner" />
       <Stack
-        flex="1 1 auto"
-        direction="column"
+        flex={1}
         alignItems="center"
-        sx={{
-          width: '100%'
-        }}
       >
         <Stack
-          flex="1 1 auto"
-          direction="column"
+          flex={1}
           justifyContent="flex-end"
           alignItems="center"
           sx={{
-            width: '100%',
-            bgcolor: 'primary.contrastText'
+            width: '100%'
           }}
         >
           <Button
