@@ -4,6 +4,8 @@ import { nanoid } from 'nanoid'
 import { useNavigate } from 'react-router-dom'
 import { Stack, TextField, Button, Box } from '@mui/material'
 
+import useTasks from '../../hooks/useTasks'
+
 import TopNavigationBar from '../TopNavigationBar'
 
 const Task = () => {
@@ -11,12 +13,17 @@ const Task = () => {
     { key: 0, value: '', name: 'topic' },
     { key: 1, value: '', name: 'name' },
     { key: 2, value: '', name: 'deadline' },
-    { key: 3, value: '', name: 'approximated time' },
-    { key: 4, value: '', name: 'description', rows: 5 }
+    { key: 3, value: '', name: 'complexity' },
+    { key: 4, value: '', name: 'approximated time' },
+    { key: 5, value: '', name: 'description', rows: 5 }
   ]
   const [items, setItems] = useState(initialItems)
 
+  const { addTask } = useTasks()
+
   const navigate = useNavigate()
+
+  const getValue = (name) => items.find((it) => it.name === name)?.value ?? ''
 
   return (
     <Box
@@ -50,6 +57,8 @@ const Task = () => {
               rows={item.rows ?? 1}
               size="small"
               color="secondary"
+              type={item.name === 'complexity' ? 'number' : 'text'}
+              slotProps={{ input: item.name === 'complexity' ? { min: 1, max: 10 } : undefined }}
               onChange={(event) => {
                 const newItems = [...items]
                 newItems[item.key].value = event.target.value
@@ -62,8 +71,14 @@ const Task = () => {
         <Button
           variant="contained"
           onClick={() => {
-            const id = nanoid()
-            localStorage.setItem(id, JSON.stringify(items))
+            const task = {
+              id: nanoid(),
+              title: getValue('name'),
+              description: getValue('description'),
+              date: getValue('deadline'),
+              complexity: Number(getValue('complexity'))
+            }
+            addTask(task)
             navigate(-1)
           }}
           sx={{

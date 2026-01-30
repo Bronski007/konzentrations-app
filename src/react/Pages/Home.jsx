@@ -3,6 +3,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Stack, Fab } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
+import useTasks from '../../hooks/useTasks'
 
 import TopNavigationBar from '../TopNavigationBar'
 
@@ -11,23 +12,10 @@ import NoteCard from '../components/NoteCard'
 const Home = () => {
   const navigate = useNavigate()
 
+  const { tasks } = useTasks()
+
   // temporary mock notes until replacement with backend data
-  const notes = [
-    {
-      id: 1,
-      title: 'Biology Assignment',
-      description: 'Complete the biology assignment on genetics.',
-      date: '2026-01-13',
-      complexity: 6
-    },
-    {
-      id: 2,
-      title: 'Math Homework',
-      description: 'Finish tasks 2 to 6 from chapter 4 and check solutions.',
-      date: '2026-01-15',
-      complexity: 10
-    }
-  ]
+  const notes = tasks
 
   return (
     <Stack
