@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import Typography from '@mui/material/Typography'
+import { Typography, Stack } from '@mui/material/'
 import PropTypes from 'prop-types'
+
 import displayTime from '../../../hooks/displayTime'
 
 const PomodoroTimer = ({ studyDuration, learningIntervalTime, breakIntervalTime }) => {
@@ -31,50 +32,31 @@ const PomodoroTimer = ({ studyDuration, learningIntervalTime, breakIntervalTime 
   })
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
+    <Stack spacing={2} alignItems="center">
 
-      <Typography variant="caption" gutterBottom>
-        learning interval:
-        {' '}
-        {learningIntervalTime}
-        {' '}
-        seconds
+      <Typography variant="h5" gutterBottom>
+        { isBreak && !(TimeLeft === 0) && 'break for' }
+        { !isBreak && !(TimeLeft === 0) && 'focus for' }
+        { (TimeLeft === 0) && 'done' }
       </Typography>
 
-      <Typography variant="caption" gutterBottom>
-        break interval:
-        {' '}
-        {breakIntervalTime}
-        {' '}
-        seconds
-      </Typography>
-
-      <Typography variant="h4" gutterbottom>
-        {isBreak ? 'break' : 'learn'}
-      </Typography>
-
-      <Typography variant="h2">
+      <Typography variant="h1">
         {displayTime(time)}
       </Typography>
 
-      <Typography variant="h6" gutterbottom>
+      <Typography variant="body1">
         {displayTime(TimeLeft)}
         {' '}
-        left
+        total left
       </Typography>
 
-      <Typography variant="h3" sx={{ color: 'rgb(6, 112, 66)', display: (TimeLeft === 0) ? 'block' : 'none' }}>
-        done!
-      </Typography>
-
-    </div>
-
+    </Stack>
   )
 }
 
 PomodoroTimer.propTypes = {
   studyDuration: PropTypes.number,
-  learningIntervalTime: PropTypes.string,
+  learningIntervalTime: PropTypes.number,
   breakIntervalTime: PropTypes.number
 }
 
