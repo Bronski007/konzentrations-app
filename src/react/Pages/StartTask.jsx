@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
+
+import { useParams } from 'react-router'
 import { Box, Stack, Typography, Card, CardContent, Button, Rating, Fab, ToggleButton, ToggleButtonGroup, TextField, InputAdornment, Popover, IconButton } from '@mui/material'
 import CircleIcon from '@mui/icons-material/Circle'
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined'
@@ -9,10 +10,11 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import CloseIcon from '@mui/icons-material/Close'
 
+import useTasks from '../../hooks/useTasks'
 import TopNavigationBar from '../TopNavigationBar'
 import Timer from './Timer/Timer'
 
-const StartTask = ({ name = 'math exam', description = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Non officiis reiciendis et iste officia enim aspernatur quam autem veritatis voluptas blanditiis, explicabo accusantium laboriosam illo minima voluptate, optio quae omnis?', complexity = 7, duration = 60 }) => {
+const StartTask = () => {
   const [timerStarted, setTimerStarted] = useState(false)
   const [atPageTop, setAtPageTop] = useState(true)
   const [studyTechnique, setStudyTechnique] = useState('pomodoro')
@@ -21,6 +23,12 @@ const StartTask = ({ name = 'math exam', description = 'Lorem ipsum dolor sit am
   const [infoAnchorEl, setInfoAnchorEl] = useState(null)
   const timerRef = useRef(null)
   const topRef = useRef(null)
+
+  // Data fetching
+  const { id } = useParams()
+  const { getTask } = useTasks()
+  const task = getTask(id)
+  const { topic, title, deadline, complexity, approximatedTime, description } = task
 
   const scroll = () => {
     if (atPageTop) {
@@ -62,7 +70,7 @@ const StartTask = ({ name = 'math exam', description = 'Lorem ipsum dolor sit am
   return (
     <Box flex={1} sx={{ width: '100%', overflowY: 'hidden', background: '#fafcff' }}>
       <div ref={topRef} />
-      <TopNavigationBar name={name} />
+      <TopNavigationBar name={topic} />
       <Stack spacing={2} sx={{ height: '200%', m: '1rem', justifyContent: 'space-between' }}>
         <Stack spacing={2} sx={{ height: '46%', justifyContent: 'space-between' }}>
           <Stack spacing={2} sx={{ flex: 1 }}>
@@ -77,7 +85,7 @@ const StartTask = ({ name = 'math exam', description = 'Lorem ipsum dolor sit am
                 <CardContent>
                   <Typography variant="h5" gutterBottom>duration</Typography>
                   <Typography variant="body1">
-                    {duration}
+                    {approximatedTime}
                     {' minutes'}
                   </Typography>
                 </CardContent>
@@ -157,7 +165,7 @@ const StartTask = ({ name = 'math exam', description = 'Lorem ipsum dolor sit am
           }
           <Card sx={{ borderRadius: '2rem', width: '100%', position: 'relative', top: '-5rem' }}>
             <CardContent ref={timerRef}>
-              {timerStarted && <Timer studyTechnique={studyTechnique} studyDuration={duration} learningIntervalTime={parseFloat(learningInterval)} breakIntervalTime={parseFloat(breakInterval)} />}
+              {timerStarted && <Timer studyTechnique={studyTechnique} studyDuration={approximatedTime} learningIntervalTime={parseFloat(learningInterval)} breakIntervalTime={parseFloat(breakInterval)} />}
             </CardContent>
           </Card>
           <Box />
@@ -165,13 +173,6 @@ const StartTask = ({ name = 'math exam', description = 'Lorem ipsum dolor sit am
       </Stack>
     </Box>
   )
-}
-
-StartTask.propTypes = {
-  name: PropTypes.string,
-  description: PropTypes.string,
-  complexity: PropTypes.number,
-  duration: PropTypes.number
 }
 
 export default StartTask

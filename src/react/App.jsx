@@ -31,7 +31,7 @@ const theme = createTheme({
 
 const appTheme = createTheme({
   colorSchemes: {
-    dark: true
+    dark: false
   },
   palette: {
     primary: {

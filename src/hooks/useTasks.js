@@ -22,9 +22,11 @@ export default function useTasks() {
 
   const addTask = (task) => setTasks((prev) => [{ ...task }, ...prev])
 
+  const getTask = (id) => tasks.find(task => task.id === id)
+
   const removeTask = useCallback((id) => {
     setTasks((prev) => prev.filter((t) => t.id !== id))
   }, [])
 
-  return { tasks, addTask, removeTask }
+  return { tasks, getTask, addTask, removeTask }
 }
