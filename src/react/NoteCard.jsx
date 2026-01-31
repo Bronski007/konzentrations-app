@@ -10,10 +10,11 @@ const getColorByComplexity = (complexity) => {
   return '#ff8787'
 }
 
-const NoteCard = ({ task: { title, deadline, complexity, approximatedTime, description } }) => (
+const NoteCard = ({ task: { title, deadline, complexity, approximatedTime, description }, onClick }) => (
   <Stack
     direction="column"
     spacing={1}
+    onClick={onClick}
     sx={{
       width: '95%',
       borderRadius: 3,
@@ -61,7 +62,8 @@ NoteCard.propTypes = {
     complexity: PropTypes.number.isRequired,
     approximatedTime: PropTypes.string.isRequired,
     description: PropTypes.string
-  }).isRequired
+  }).isRequired,
+  onClick: PropTypes.func.isRequired
 }
 
 export default NoteCard

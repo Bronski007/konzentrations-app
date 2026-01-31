@@ -30,7 +30,6 @@ const Home = () => {
         sx={{
           width: '100%',
           bgcolor: 'primary.contrastText',
-          paddingTop: 2,
           paddingBottom: 2,
           position: 'relative'
         }}
@@ -49,6 +48,7 @@ const Home = () => {
             <NoteCard
               key={task.id}
               task={task}
+              onClick={() => navigate('/StartTask')}
             />
           ))}
         </Stack>
