@@ -28,7 +28,7 @@ const StartTask = () => {
   const { id } = useParams()
   const { getTask } = useTasks()
   const task = getTask(id)
-  const { topic, title, deadline, complexity, approximatedTime, description } = task
+  const { title, deadline, complexity, approximatedTime, description } = task
 
   const scroll = () => {
     if (atPageTop) {
@@ -70,8 +70,8 @@ const StartTask = () => {
   return (
     <Box flex={1} sx={{ width: '100%', overflowY: 'hidden', background: '#fafcff' }}>
       <div ref={topRef} />
-      <TopNavigationBar name={topic} />
-      <Stack spacing={2} sx={{ height: '200%', m: '1rem', justifyContent: 'space-between' }}>
+      <TopNavigationBar name={title} />
+      <Stack spacing={2} sx={{ height: '200%', m: '1rem', alignItems: 'center' }}>
         <Stack spacing={2} sx={{ height: '46%', justifyContent: 'space-between' }}>
           <Stack spacing={2} sx={{ flex: 1 }}>
             <Stack direction="row" spacing={2} sx={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
@@ -93,8 +93,14 @@ const StartTask = () => {
             </Stack>
             <Card sx={{ borderRadius: '2rem' }}>
               <CardContent>
-                <Typography variant="h5" gutterBottom>goal</Typography>
+                <Typography variant="h5" gutterBottom>description</Typography>
                 <Typography variant="body1" sx={{ overflow: 'auto', scrollbarWidth: 'none', maxHeight: '15vh' }}>{description}</Typography>
+              </CardContent>
+            </Card>
+            <Card sx={{ borderRadius: '2rem' }}>
+              <CardContent>
+                <Typography variant="h5" gutterBottom>deadline</Typography>
+                <Typography variant="body1" sx={{ overflow: 'auto', scrollbarWidth: 'none', maxHeight: '15vh' }}>{deadline}</Typography>
               </CardContent>
             </Card>
             <Card sx={{ borderRadius: '2rem' }}>

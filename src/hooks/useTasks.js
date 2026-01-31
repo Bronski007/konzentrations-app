@@ -15,13 +15,15 @@ const readTasks = () => {
 export default function useTasks() {
   const [tasks, setTasks] = useState(() => readTasks())
 
-  // updates the local storage when ever the state of taks changes
+  // Persist tasks to localStorage whenever the task state changes
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks))
   }, [tasks])
 
+  // Add a new task to the beginning of the task list
   const addTask = (task) => setTasks((prev) => [{ ...task }, ...prev])
 
+  // Retrieve a single task by its id
   const getTask = (id) => tasks.find(task => task.id === id)
 
   const removeTask = useCallback((id) => {
