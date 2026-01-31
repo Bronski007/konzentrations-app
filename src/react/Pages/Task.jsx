@@ -81,7 +81,7 @@ const Task = () => {
                 title: getFieldValue('title'),
                 deadline: getFieldValue('deadline'),
                 complexity: Number(getFieldValue('complexity')),
-                approximated_time: getFieldValue('approximated time'),
+                approximatedTime: getFieldValue('approximated time'),
                 description: getFieldValue('description')
               }
             )

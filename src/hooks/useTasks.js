@@ -1,5 +1,3 @@
-// (zeineb) TO:DO create hook to link tasks with home note screen (substitute placeholder notes with input data from tasks) + link to local storage
-
 import { useEffect, useState, useCallback } from 'react'
 
 // All task objects are stored in an array. This key accesses that array.
@@ -17,7 +15,7 @@ const readTasks = () => {
 export default function useTasks() {
   const [tasks, setTasks] = useState(() => readTasks())
 
-  // keeping localStorage in sync
+  // updates the local storage when ever the state of taks changes
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks))
   }, [tasks])

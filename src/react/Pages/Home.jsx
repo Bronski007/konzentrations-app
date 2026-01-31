@@ -32,11 +32,9 @@ const Home = () => {
           bgcolor: 'primary.contrastText',
           paddingTop: 2,
           paddingBottom: 2,
-          position: 'relative' // for positioning the FAB
+          position: 'relative'
         }}
       >
-
-        {/* Notes list (Frame 3) */}
         <Stack
           direction="column"
           alignItems="center"
@@ -44,16 +42,16 @@ const Home = () => {
           sx={{
             width: '100%',
             flex: '1 1 auto',
-            overflowY: 'auto',
             paddingBottom: 2
           }}
         >
           {tasks.map((task) => (
-            <NoteCard key={task.id} note={task} />
+            <NoteCard
+              key={task.id}
+              task={task}
+            />
           ))}
         </Stack>
-
-        {/* Create (+) Fab (Frame 1,3,...) */}
 
         <Fab
           color="primary"

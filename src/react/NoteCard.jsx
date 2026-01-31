@@ -10,40 +10,57 @@ const getColorByComplexity = (complexity) => {
   return '#ff8787'
 }
 
-const NoteCard = ({ note }) => (
+const NoteCard = ({ task: { title, deadline, complexity, approximatedTime, description } }) => (
   <Stack
     direction="column"
+    spacing={1}
     sx={{
       width: '95%',
       borderRadius: 3,
       padding: 1.5,
-      bgcolor: getColorByComplexity(note.complexity),
+      bgcolor: getColorByComplexity(complexity),
       color: '#0f172a'
     }}
   >
-    <Stack direction="row" justifyContent="space-between" alignItems="center">
-      <Typography fontWeight={700}>{note.title}</Typography>
-      {note.date ? (
-        <Typography variant="caption" sx={{ opacity: 0.8 }}>
-          {note.date}
+    <Stack
+      direction="row"
+      justifyContent="space-between"
+      alignItems="center"
+    >
+      <Stack
+        direction="row"
+        alignItems="baseline"
+        spacing={0.6}
+      >
+        <Typography variant="h6" fontWeight="700">
+          {title}
         </Typography>
-      ) : null}
-    </Stack>
 
-    {note.description ? (
-      <Typography variant="body2" sx={{ opacity: 0.95 }}>
-        {note.description}
+        <Typography variant="body1">
+          (
+          {approximatedTime}
+          h)
+        </Typography>
+      </Stack>
+
+      <Typography variant="body1">
+        {deadline}
       </Typography>
-    ) : null}
+
+    </Stack>
+    <Typography variant="body2">
+      {description}
+    </Typography>
   </Stack>
 )
 
 NoteCard.propTypes = {
-  note: PropTypes.shape({
+  task: PropTypes.shape({
     title: PropTypes.string.isRequired,
-    description: PropTypes.string,
-    date: PropTypes.string,
-    complexity: PropTypes.number.isRequired
+    deadline: PropTypes.string,
+    complexity: PropTypes.number.isRequired,
+    approximatedTime: PropTypes.string.isRequired,
+    description: PropTypes.string
   }).isRequired
 }
 
