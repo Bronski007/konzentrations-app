@@ -1,5 +1,4 @@
 import React, { useRef, useState, useEffect } from 'react'
-
 import { useParams } from 'react-router'
 import { Box, Stack, Typography, Card, CardContent, Button, Rating, Fab, ToggleButton, ToggleButtonGroup, TextField, InputAdornment, Popover, IconButton } from '@mui/material'
 import CircleIcon from '@mui/icons-material/Circle'
@@ -9,6 +8,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import CloseIcon from '@mui/icons-material/Close'
+import EventIcon from '@mui/icons-material/Event'
 
 import useTasks from '../../hooks/useTasks'
 import TopNavigationBar from '../TopNavigationBar'
@@ -71,7 +71,7 @@ const StartTask = () => {
     <Box flex={1} sx={{ width: '100%', overflowY: 'hidden', background: '#fafcff' }}>
       <div ref={topRef} />
       <TopNavigationBar name={title} />
-      <Stack spacing={2} sx={{ height: '200%', m: '1rem', alignItems: 'center' }}>
+      <Stack spacing={2} sx={{ height: '200%', m: '1rem', justifyContent: 'space-between' }}>
         <Stack spacing={2} sx={{ height: '46%', justifyContent: 'space-between' }}>
           <Stack spacing={2} sx={{ flex: 1 }}>
             <Stack direction="row" spacing={2} sx={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
@@ -93,14 +93,14 @@ const StartTask = () => {
             </Stack>
             <Card sx={{ borderRadius: '2rem' }}>
               <CardContent>
-                <Typography variant="h5" gutterBottom>description</Typography>
+                <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between', alignItems: 'flex-start', position: 'relative' }}>
+                  <Typography variant="h5" gutterBottom>description</Typography>
+                  <Stack direction="row" spacing={0.5} sx={{ position: 'absolute', top: 8, right: 8 }}>
+                    <EventIcon fontSize="small" color="action" />
+                    <Typography variant="body2" color="textSecondary">{deadline}</Typography>
+                  </Stack>
+                </Stack>
                 <Typography variant="body1" sx={{ overflow: 'auto', scrollbarWidth: 'none', maxHeight: '15vh' }}>{description}</Typography>
-              </CardContent>
-            </Card>
-            <Card sx={{ borderRadius: '2rem' }}>
-              <CardContent>
-                <Typography variant="h5" gutterBottom>deadline</Typography>
-                <Typography variant="body1" sx={{ overflow: 'auto', scrollbarWidth: 'none', maxHeight: '15vh' }}>{deadline}</Typography>
               </CardContent>
             </Card>
             <Card sx={{ borderRadius: '2rem' }}>
