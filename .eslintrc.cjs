@@ -12,7 +12,7 @@ module.exports = {
     node: true
   },
   rules: {
-    'max-len': ['warn', { code: 200 }],
+    'max-len': ['warn', { code: 400 }],
     'no-plusplus': ['warn', { allowForLoopAfterthoughts: true }],
     'object-curly-newline': 'off',
     'one-var-declaration-per-line': 'off',
