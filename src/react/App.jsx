@@ -30,14 +30,16 @@ const theme = createTheme({
 })
 
 const appTheme = createTheme({
+  colorSchemes: {
+    dark: true
+  },
   palette: {
     primary: {
-      main: '#3f51b5',
-      light: 'rgb(101, 115, 195)',
-      dark: 'rgb(44, 56, 126)',
-      contrastText: '#fff'
+      main: '#3f51b5'
     },
-    secondary: { main: '#722093' }
+    secondary: {
+      main: '#722093'
+    }
   }
 })
 
