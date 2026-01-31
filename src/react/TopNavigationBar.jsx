@@ -12,7 +12,13 @@ const TopNavigationBar = ({ name }) => {
   const isRoot = location.pathname === '/'
 
   return (
-    <Box sx={{ position: 'sticky', top: 0, zIndex: 10000 }}>
+    <Box
+      sx={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 10000
+      }}
+    >
       <Stack
         display="flex"
         direction="row"
@@ -28,14 +34,21 @@ const TopNavigationBar = ({ name }) => {
             onClick={() => navigate(-1)}
           >
             <CloseIcon
-              sx={{ color: 'primary.contrastText' }}
+              sx={{
+                color: 'primary.contrastText'
+              }}
             />
           </IconButton>
         )}
 
         <Typography
           variant="h4"
-          sx={{ fontWeight: 700, overflow: 'auto', whiteSpace: 'nowrap', scrollbarWidth: 'none' }}
+          sx={{
+            fontWeight: 700,
+            overflow: 'auto',
+            whiteSpace: 'nowrap',
+            scrollbarWidth: 'none'
+          }}
         >
           {name}
         </Typography>
