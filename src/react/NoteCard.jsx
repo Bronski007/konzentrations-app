@@ -4,22 +4,20 @@ import { Stack, Typography } from '@mui/material'
 import PropTypes from 'prop-types'
 
 const getColorByComplexity = (complexity) => {
-  if (complexity <= 3) return '#bae6fd' // very easy (light blue)
-  if (complexity <= 5) return '#7dd3fc' // easy (blue)
-  if (complexity <= 7) return '#fde68a' // medium (yellow)
-  if (complexity <= 9) return '#fca5a5' // hard (light red)
-  return '#ef4444' // very hard (red)
+  if (complexity <= 3) return '#cdfee2'
+  if (complexity <= 5) return '#8ff77c'
+  if (complexity <= 7) return '#f3bd8a'
+  return '#ff8787'
 }
 
 const NoteCard = ({ note }) => (
   <Stack
     direction="column"
-    spacing={0.5}
     sx={{
-      width: '90%',
-      borderRadius: 2,
+      width: '95%',
+      borderRadius: 3,
       padding: 1.5,
-      bgcolor: getColorByComplexity(Number(note.complexity)),
+      bgcolor: getColorByComplexity(note.complexity),
       color: '#0f172a'
     }}
   >

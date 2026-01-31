@@ -7,21 +7,16 @@ import useTasks from '../../hooks/useTasks'
 
 import TopNavigationBar from '../TopNavigationBar'
 
-import NoteCard from '../components/NoteCard'
+import NoteCard from '../NoteCard'
 
 const Home = () => {
   const navigate = useNavigate()
-
   const { tasks } = useTasks()
-
-  // temporary mock notes until replacement with backend data
-  const notes = tasks
 
   return (
     <Stack
-      flex="1 1 auto"
+      flex="1"
       direction="column"
-      alignItems="center"
       sx={{
         width: '100%'
       }}
@@ -53,8 +48,8 @@ const Home = () => {
             paddingBottom: 2
           }}
         >
-          {notes.map((note) => (
-            <NoteCard key={note.id} note={note} />
+          {tasks.map((task) => (
+            <NoteCard key={task.id} note={task} />
           ))}
         </Stack>
 

@@ -2,12 +2,13 @@
 
 import { useEffect, useState, useCallback } from 'react'
 
+// All task objects are stored in an array. This key accesses that array.
 const STORAGE_KEY = 'tasks_data'
 
 const readTasks = () => {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    return raw ? JSON.parse(raw) : []
+    const items = localStorage.getItem(STORAGE_KEY)
+    return items ? JSON.parse(items) : []
   } catch (error) {
     return []
   }
@@ -21,9 +22,7 @@ export default function useTasks() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks))
   }, [tasks])
 
-  const addTask = useCallback((task) => {
-    setTasks((prev) => [{ ...task }, ...prev])
-  }, [])
+  const addTask = (task) => setTasks((prev) => [{ ...task }, ...prev])
 
   const removeTask = useCallback((id) => {
     setTasks((prev) => prev.filter((t) => t.id !== id))
