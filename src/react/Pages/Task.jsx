@@ -10,25 +10,21 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import useTasks from '../../hooks/useTasks'
 import TopNavigationBar from '../TopNavigationBar'
 
-const initialItems = [
-  { key: 0, value: '', name: 'topic' },
-  { key: 1, value: '', name: 'title' },
-  { key: 2, value: '', name: 'deadline' },
-  { key: 3, value: '', name: 'complexity' },
-  { key: 4, value: '', name: 'approximated time' },
-  { key: 5, value: '', name: 'description', rows: 5 }
-]
+const initialItems = {
+  topic: '',
+  title: '',
+  description: '',
+  deadline: null,
+  approximatedTime: { 'approximated Time': '', type: 'min' },
+  complexity: ''
+}
 
 const Task = () => {
   const [items, setItems] = useState(initialItems)
-  const [date, setDate] = useState(null)
-  const [[time, type], setTime] = useState(['', 'min'])
+  const [deadline, setDeadline] = useState(null)
+
   const navigate = useNavigate()
-
   const { addTask } = useTasks()
-
-  // Returns the current value of a TextField identified by its name
-  const getFieldValue = (fieldName) => items.find((item) => item.name === fieldName)?.value ?? ''
 
   return (
     <Box
@@ -55,19 +51,49 @@ const Task = () => {
           spacing={2}
         >
           <TextField
+            label="topic"
+            value={items.topic}
+            size="small"
+            onChange={(e) => {
+              const clonedItems = structuredClone(items)
+              clonedItems.topic = e.target.value
+              setItems(clonedItems)
+            }}
+          />
+
+          <TextField
+            label="title"
+            value={items.title}
+            size="small"
+            onChange={(e) => {
+              const clonedItems = structuredClone(items)
+              clonedItems.title = e.target.value
+              setItems(clonedItems)
+            }}
+          />
+
+          <TextField
             label="approximated time"
             size="small"
-            color="secondary"
-            value={time}
-            onChange={(e) => setTime([e.target.value, type])}
+            type="number"
+            value={items.approximatedTime['approximated Time']}
+            onChange={(e) => {
+              const clonedItems = structuredClone(items)
+              clonedItems.approximatedTime['approximated Time'] = e.target.value
+              setItems(clonedItems)
+            }}
             slotProps={{
               input: {
                 endAdornment: (
                   <InputAdornment position="end">
                     <Select
                       variant="standard"
-                      value={type}
-                      onChange={(e) => setTime([time, e.target.value])}
+                      value={items.approximatedTime.type}
+                      onChange={(e) => {
+                        const clonedItems = structuredClone(items)
+                        clonedItems.approximatedTime.type = e.target.value
+                        setItems(clonedItems)
+                      }}
                       disableUnderline
                     >
                       <MenuItem value="h">h</MenuItem>
@@ -83,41 +109,49 @@ const Task = () => {
             <DatePicker
               label="Deadline"
               format="DD/MM/YYYY"
-              value={date}
+              value={deadline}
               slotProps={{
                 textField: {
                   size: 'small'
                 }
               }}
-              onChange={(newDate) => setDate(newDate)}
+              onChange={(newDeadline) => {
+                setDeadline(newDeadline)
+              }}
             />
           </LocalizationProvider>
 
-          {items.map((item) => (
-            <TextField
-              key={item.key}
-              label={item.name}
-              value={item.value}
-              multiline={item.rows > 1}
-              rows={item.rows ?? 1}
-              size="small"
-              color="secondary"
-              type={item.name === 'complexity' ? 'number' : 'text'}
-              slotProps={{
-                input: { inputProps: { min: 0, max: 10 } }
-              }}
-              onChange={(event) => {
-                const newItems = [...items]
-                newItems[item.key].value = event.target.value
-                setItems(newItems)
-              }}
-            />
-          ))}
+          <TextField
+            label="complexity"
+            value={items.complexity}
+            type="number"
+            size="small"
+            onChange={(e) => {
+              const clonedItems = structuredClone(items)
+              clonedItems.complexity = e.target.value
+              setItems(clonedItems)
+            }}
+          />
+
+          <TextField
+            label="description"
+            value={items.description}
+            multiline
+            rows="5"
+            size="small"
+            onChange={(e) => {
+              const clonedItems = structuredClone(items)
+              clonedItems.description = e.target.value
+              setItems(clonedItems)
+            }}
+          />
+
         </Stack>
         <Button
           variant="contained"
           onClick={() => {
             // Creates a new task object from the current item values and adds
+            /*
             addTask(
               {
                 id: nanoid(),
@@ -129,6 +163,8 @@ const Task = () => {
                 description: getFieldValue('description')
               }
             )
+            */
+
             navigate(-1)
           }}
           sx={{
