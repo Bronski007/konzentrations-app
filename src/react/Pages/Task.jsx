@@ -2,22 +2,27 @@ import React, { useState } from 'react'
 
 import { nanoid } from 'nanoid'
 import { useNavigate } from 'react-router-dom'
-import { Stack, TextField, Button, Box } from '@mui/material'
+import { Stack, TextField, Button, Box, Select, MenuItem, InputAdornment } from '@mui/material'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 import useTasks from '../../hooks/useTasks'
-
 import TopNavigationBar from '../TopNavigationBar'
 
+const initialItems = [
+  { key: 0, value: '', name: 'topic' },
+  { key: 1, value: '', name: 'title' },
+  { key: 2, value: '', name: 'deadline' },
+  { key: 3, value: '', name: 'complexity' },
+  { key: 4, value: '', name: 'approximated time' },
+  { key: 5, value: '', name: 'description', rows: 5 }
+]
+
 const Task = () => {
-  const initialItems = [
-    { key: 0, value: '', name: 'topic' },
-    { key: 1, value: '', name: 'title' },
-    { key: 2, value: '', name: 'deadline' },
-    { key: 3, value: '', name: 'complexity' },
-    { key: 4, value: '', name: 'approximated time' },
-    { key: 5, value: '', name: 'description', rows: 5 }
-  ]
   const [items, setItems] = useState(initialItems)
+  const [date, setDate] = useState(null)
+  const [[time, type], setTime] = useState(['', 'min'])
   const navigate = useNavigate()
 
   const { addTask } = useTasks()
@@ -49,6 +54,45 @@ const Task = () => {
           }}
           spacing={2}
         >
+          <TextField
+            label="approximated time"
+            size="small"
+            color="secondary"
+            value={time}
+            onChange={(e) => setTime([e.target.value, type])}
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Select
+                      variant="standard"
+                      value={type}
+                      onChange={(e) => setTime([time, e.target.value])}
+                      disableUnderline
+                    >
+                      <MenuItem value="h">h</MenuItem>
+                      <MenuItem value="min">min</MenuItem>
+                    </Select>
+                  </InputAdornment>
+                )
+              }
+            }}
+          />
+
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label="Deadline"
+              format="DD/MM/YYYY"
+              value={date}
+              slotProps={{
+                textField: {
+                  size: 'small'
+                }
+              }}
+              onChange={(newDate) => setDate(newDate)}
+            />
+          </LocalizationProvider>
+
           {items.map((item) => (
             <TextField
               key={item.key}
