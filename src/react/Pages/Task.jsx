@@ -14,14 +14,13 @@ const initialItems = {
   topic: '',
   title: '',
   description: '',
-  deadline: null,
-  approximatedTime: { 'approximated Time': '', type: 'min' },
+  approximatedTime: { value: '', type: 'min' },
   complexity: ''
 }
 
 const Task = () => {
   const [items, setItems] = useState(initialItems)
-  const [deadline, setDeadline] = useState(null)
+  const [deadlineDate, setDeadlineDate] = useState(null)
 
   const navigate = useNavigate()
   const { addTask } = useTasks()
@@ -76,10 +75,10 @@ const Task = () => {
             label="approximated time"
             size="small"
             type="number"
-            value={items.approximatedTime['approximated Time']}
+            value={items.approximatedTime.value}
             onChange={(e) => {
               const clonedItems = structuredClone(items)
-              clonedItems.approximatedTime['approximated Time'] = e.target.value
+              clonedItems.approximatedTime.value = e.target.value
               setItems(clonedItems)
             }}
             slotProps={{
@@ -109,14 +108,14 @@ const Task = () => {
             <DatePicker
               label="Deadline"
               format="DD/MM/YYYY"
-              value={deadline}
+              value={deadlineDate}
               slotProps={{
                 textField: {
                   size: 'small'
                 }
               }}
               onChange={(newDeadline) => {
-                setDeadline(newDeadline)
+                setDeadlineDate(newDeadline)
               }}
             />
           </LocalizationProvider>
@@ -151,20 +150,15 @@ const Task = () => {
           variant="contained"
           onClick={() => {
             // Creates a new task object from the current item values and adds
-            /*
-            addTask(
-              {
-                id: nanoid(),
-                topic: getFieldValue('topic'),
-                title: getFieldValue('title'),
-                deadline: getFieldValue('deadline'),
-                complexity: Number(getFieldValue('complexity')),
-                approximatedTime: getFieldValue('approximated time'),
-                description: getFieldValue('description')
-              }
-            )
-            */
-
+            addTask({
+              id: nanoid(),
+              topic: items.topic,
+              title: items.title,
+              description: items.description,
+              approximatedTime: items.approximatedTime,
+              complexity: Number(items.complexity),
+              deadline: deadlineDate
+            })
             navigate(-1)
           }}
           sx={{

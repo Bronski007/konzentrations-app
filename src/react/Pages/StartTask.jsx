@@ -25,8 +25,8 @@ const StartTask = () => {
   const topRef = useRef(null)
 
   // Data fetching
-  const { id } = useParams()
   const { getTask } = useTasks()
+  const { id } = useParams()
   const task = getTask(id)
   const { title, deadline, complexity, approximatedTime, description } = task
 
@@ -85,8 +85,7 @@ const StartTask = () => {
                 <CardContent>
                   <Typography variant="h5" gutterBottom>duration</Typography>
                   <Typography variant="body1">
-                    {approximatedTime}
-                    {' minutes'}
+                    {`${approximatedTime.value}${approximatedTime.type}`}
                   </Typography>
                 </CardContent>
               </Card>
@@ -100,7 +99,7 @@ const StartTask = () => {
             <Card sx={{ borderRadius: '2rem' }}>
               <CardContent>
                 <Typography variant="h5" gutterBottom>deadline</Typography>
-                <Typography variant="body1" sx={{ overflow: 'auto', scrollbarWidth: 'none', maxHeight: '15vh' }}>{deadline}</Typography>
+                <Typography variant="body1" sx={{ overflow: 'auto', scrollbarWidth: 'none', maxHeight: '15vh' }}>{new Date(deadline).toLocaleDateString('de-DE')}</Typography>
               </CardContent>
             </Card>
             <Card sx={{ borderRadius: '2rem' }}>
