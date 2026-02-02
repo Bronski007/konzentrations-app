@@ -29,6 +29,8 @@ const StartTask = () => {
   const { id } = useParams()
   const task = getTask(id)
   const { title, deadline, complexity, approximatedTime, description } = task
+  const typeMultiplyer = approximatedTime.type === 'h' ? 60 : 1
+  const aproxTimeInMin = Number(approximatedTime.value) * typeMultiplyer
 
   const scroll = () => {
     if (atPageTop) {
@@ -170,7 +172,7 @@ const StartTask = () => {
           }
           <Card sx={{ borderRadius: '2rem', width: '100%', position: 'relative', top: '-5rem' }}>
             <CardContent ref={timerRef}>
-              {timerStarted && <Timer studyTechnique={studyTechnique} studyDuration={approximatedTime} learningIntervalTime={parseFloat(learningInterval)} breakIntervalTime={parseFloat(breakInterval)} />}
+              {timerStarted && <Timer studyTechnique={studyTechnique} studyDuration={aproxTimeInMin} learningIntervalTime={parseFloat(learningInterval)} breakIntervalTime={parseFloat(breakInterval)} />}
             </CardContent>
           </Card>
           <Box />
