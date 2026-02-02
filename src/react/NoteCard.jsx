@@ -10,7 +10,7 @@ const getColorByComplexity = (complexity) => {
   return '#ff8787'
 }
 
-const NoteCard = ({ task: { title, deadline, complexity, approximatedTime, description }, onClick }) => (
+const NoteCard = ({ task: { title, approximatedTime: { value, type }, complexity, deadline, description }, onClick }) => (
   <Stack
     direction="column"
     spacing={1}
@@ -38,14 +38,12 @@ const NoteCard = ({ task: { title, deadline, complexity, approximatedTime, descr
         </Typography>
 
         <Typography variant="body1">
-          (
-          {approximatedTime}
-          h)
+          {`${value}${type}`}
         </Typography>
       </Stack>
 
       <Typography variant="body1">
-        {deadline}
+        {new Date(deadline).toLocaleDateString('de-DE')}
       </Typography>
 
     </Stack>
@@ -58,10 +56,10 @@ const NoteCard = ({ task: { title, deadline, complexity, approximatedTime, descr
 NoteCard.propTypes = {
   task: PropTypes.shape({
     title: PropTypes.string.isRequired,
-    deadline: PropTypes.string,
+    deadline: PropTypes.string.isRequired,
     complexity: PropTypes.number.isRequired,
-    approximatedTime: PropTypes.string.isRequired,
-    description: PropTypes.string
+    approximatedTime: PropTypes.object.isRequired,
+    description: PropTypes.string.isRequired
   }).isRequired,
   onClick: PropTypes.func.isRequired
 }

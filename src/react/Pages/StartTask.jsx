@@ -25,10 +25,12 @@ const StartTask = () => {
   const topRef = useRef(null)
 
   // Data fetching
-  const { id } = useParams()
   const { getTask } = useTasks()
+  const { id } = useParams()
   const task = getTask(id)
   const { title, deadline, complexity, approximatedTime, description } = task
+  const typeMultiplyer = approximatedTime.type === 'h' ? 60 : 1
+  const aproxTimeInMin = Number(approximatedTime.value) * typeMultiplyer
 
   const scroll = () => {
     if (atPageTop) {
@@ -85,8 +87,7 @@ const StartTask = () => {
                 <CardContent>
                   <Typography variant="h5" gutterBottom>duration</Typography>
                   <Typography variant="body1">
-                    {approximatedTime}
-                    {' minutes'}
+                    {`${approximatedTime.value}${approximatedTime.type}`}
                   </Typography>
                 </CardContent>
               </Card>
@@ -97,7 +98,7 @@ const StartTask = () => {
                   <Typography variant="h5" gutterBottom>description</Typography>
                   <Stack direction="row" spacing={0.5} sx={{ position: 'absolute', top: 8, right: 8 }}>
                     <EventIcon fontSize="small" color="action" />
-                    <Typography variant="body2" color="textSecondary">{deadline}</Typography>
+                    <Typography variant="body2" color="textSecondary">{new Date(deadline).toLocaleDateString('de-DE', { year: 'numeric', month: '2-digit', day: '2-digit' })}</Typography>
                   </Stack>
                 </Stack>
                 <Typography variant="body1" sx={{ overflow: 'auto', scrollbarWidth: 'none', maxHeight: '15vh' }}>{description}</Typography>
@@ -171,7 +172,7 @@ const StartTask = () => {
           }
           <Card sx={{ borderRadius: '2rem', width: '100%', position: 'relative', top: '-5rem' }}>
             <CardContent ref={timerRef}>
-              {timerStarted && <Timer studyTechnique={studyTechnique} studyDuration={approximatedTime} learningIntervalTime={parseFloat(learningInterval)} breakIntervalTime={parseFloat(breakInterval)} />}
+              {timerStarted && <Timer studyTechnique={studyTechnique} studyDuration={aproxTimeInMin} learningIntervalTime={parseFloat(learningInterval)} breakIntervalTime={parseFloat(breakInterval)} />}
             </CardContent>
           </Card>
           <Box />
