@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 
+import { Slider, Typography, Stack, TextField, Button, Box, Select, MenuItem, InputAdornment } from '@mui/material'
 import { nanoid } from 'nanoid'
 import { useNavigate } from 'react-router-dom'
-import { Stack, TextField, Button, Box, Select, MenuItem, InputAdornment } from '@mui/material'
+
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -15,7 +16,7 @@ const initialItems = {
   title: '',
   description: '',
   approximatedTime: { value: '', type: 'min' },
-  complexity: ''
+  complexity: 1
 }
 
 const Task = () => {
@@ -27,11 +28,12 @@ const Task = () => {
 
   return (
     <Box
-      flex={1}
       sx={{
+        height: '100vh',
         width: '100%',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        overflow: 'hidden'
       }}
     >
       <TopNavigationBar name="Task" />
@@ -39,13 +41,17 @@ const Task = () => {
         flex={1}
         alignItems="center"
         sx={{
-          width: '100%'
+          width: '100%',
+          overflowY: 'auto',
+          overflowX: 'hidden'
         }}
       >
         <Stack
-          flex={1}
           sx={{
-            width: '90%'
+            width: '90%',
+            margin: '0 auto',
+            padding: 2,
+            paddingBottom: 4
           }}
           spacing={2}
         >
@@ -53,6 +59,7 @@ const Task = () => {
             label="topic"
             value={items.topic}
             size="small"
+            required
             onChange={(e) => {
               const clonedItems = structuredClone(items)
               clonedItems.topic = e.target.value
@@ -64,6 +71,7 @@ const Task = () => {
             label="title"
             value={items.title}
             size="small"
+            required
             onChange={(e) => {
               const clonedItems = structuredClone(items)
               clonedItems.title = e.target.value
@@ -76,6 +84,7 @@ const Task = () => {
             size="small"
             type="number"
             value={items.approximatedTime.value}
+            required
             onChange={(e) => {
               const clonedItems = structuredClone(items)
               clonedItems.approximatedTime.value = e.target.value
@@ -109,6 +118,7 @@ const Task = () => {
               label="Deadline"
               format="DD/MM/YYYY"
               value={deadlineDate}
+              required
               slotProps={{
                 textField: {
                   size: 'small'
@@ -120,17 +130,27 @@ const Task = () => {
             />
           </LocalizationProvider>
 
-          <TextField
-            label="complexity"
-            value={items.complexity}
-            type="number"
-            size="small"
-            onChange={(e) => {
-              const clonedItems = structuredClone(items)
-              clonedItems.complexity = e.target.value
-              setItems(clonedItems)
-            }}
-          />
+          <Stack spacing={1}>
+            <Typography variant="caption">
+              Complexity:
+              {' '}
+              {items.complexity || 1}
+            </Typography>
+
+            <Slider
+              value={items.complexity || 1}
+              min={1}
+              max={10}
+              step={1}
+              marks
+              valueLabelDisplay="auto"
+              onChange={(_, newValue) => {
+                const clonedItems = structuredClone(items)
+                clonedItems.complexity = newValue
+                setItems(clonedItems)
+              }}
+            />
+          </Stack>
 
           <TextField
             label="description"
@@ -138,6 +158,7 @@ const Task = () => {
             multiline
             rows="5"
             size="small"
+            required
             onChange={(e) => {
               const clonedItems = structuredClone(items)
               clonedItems.description = e.target.value
