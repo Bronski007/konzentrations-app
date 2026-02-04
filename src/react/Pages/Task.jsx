@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 
-import { Slider, Typography, Stack, TextField, Button, Box, Select, MenuItem, InputAdornment } from '@mui/material'
 import { nanoid } from 'nanoid'
 import { useNavigate } from 'react-router-dom'
 
+import { Slider, Typography, Stack, TextField, Button, Box, Select, MenuItem, InputAdornment } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -130,8 +130,17 @@ const Task = () => {
             />
           </LocalizationProvider>
 
-          <Stack spacing={1}>
-            <Typography variant="caption">
+          <Box
+            spacing={1}
+            sx={{
+              border: 1,
+              borderColor: 'divider',
+              borderRadius: 1,
+              padding: 2,
+              flexDirection: 'column'
+            }}
+          >
+            <Typography>
               Complexity:
               {' '}
               {items.complexity || 1}
@@ -150,7 +159,7 @@ const Task = () => {
                 setItems(clonedItems)
               }}
             />
-          </Stack>
+          </Box>
 
           <TextField
             label="description"
