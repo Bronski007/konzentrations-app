@@ -12,7 +12,7 @@ const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<Home />} />
     <Route path="/Task" element={<Task />} />
-    <Route path="/StartTask" element={<StartTask />} />
+    <Route path="/StartTask/:id" element={<StartTask />} />
     <Route path="*" element={<Error404 />} />
   </Routes>
 )
