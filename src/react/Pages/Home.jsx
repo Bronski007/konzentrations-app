@@ -48,7 +48,7 @@ const Home = () => {
             <NoteCard
               key={task.id}
               task={task}
-              onClick={() => navigate('/StartTask')}
+              onClick={() => navigate(`/StartTask/${task.id}`)}
             />
           ))}
         </Stack>

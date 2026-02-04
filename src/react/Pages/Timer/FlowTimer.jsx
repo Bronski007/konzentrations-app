@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import Typography from '@mui/material/Typography'
-import { Button } from '@mui/material'
+import { Button, Stack } from '@mui/material'
+
 import displayTime from '../../../hooks/displayTime'
 
 const FlowTimer = ({ studyDuration }) => {
@@ -39,39 +40,31 @@ const FlowTimer = ({ studyDuration }) => {
   })
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
+    <Stack spacing={2} alignItems="center">
 
-      <Typography variant="caption" gutterBottom>
-        duration:
-        {' '}
-        {studyDuration / 60}
-        {' '}
-        minutes.
+      <Typography variant="h5" gutterBottom>
+        { isBreak && !(timePassed === studyDuration) && 'break for' }
+        { !isBreak && !(timePassed === studyDuration) && 'focusing for' }
+        { (timePassed === studyDuration) && 'done' }
       </Typography>
 
-      <Typography variant="h4" gutterbottom>
-        {isBreak ? 'break' : 'learn'}
-      </Typography>
-
-      <Typography variant="h2" gutterbottom>
+      <Typography variant="h1">
         {displayTime(time)}
       </Typography>
 
-      <Typography variant="caption" gutterbottom>
-        time passed:
-        {' '}
+      <Typography variant="body1">
         {displayTime(timePassed)}
+        {' / '}
+        {displayTime(studyDuration)}
+        {' '}
+        total passed
       </Typography>
 
-      <Button variant="contained" onClick={() => { switchToBreak() }} disabled={isBreak || studyDuration === timePassed}>
+      <Button fullWidth sx={{ borderRadius: '2rem' }} variant="contained" onClick={() => { switchToBreak() }} disabled={isBreak || studyDuration === timePassed}>
         break
       </Button>
 
-      <Typography variant="h3" sx={{ color: 'rgb(6, 112, 66)', display: (studyDuration === timePassed) ? 'block' : 'none' }}>
-        done!
-      </Typography>
-
-    </div>
+    </Stack>
 
   )
 }
