@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { useParams } from 'react-router'
+import { useParams, useNavigate } from 'react-router'
 import { Box, Stack, Typography, Card, CardContent, Button, Rating, Fab, ToggleButton, ToggleButtonGroup, TextField, InputAdornment, Popover, IconButton } from '@mui/material'
 import CircleIcon from '@mui/icons-material/Circle'
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined'
@@ -23,11 +23,20 @@ const StartTask = () => {
   const [infoAnchorEl, setInfoAnchorEl] = useState(null)
   const timerRef = useRef(null)
   const topRef = useRef(null)
+  const navigate = useNavigate()
 
   // Data fetching
-  const { getTask } = useTasks()
+  const { getTask, removeTask, tasks: allTasks } = useTasks()
   const { id } = useParams()
   const task = getTask(id)
+
+  if (!task) {
+    // Task doesn't exist (was already deleted)
+    console.log('Task not found. Available tasks: ', allTasks)
+    navigate('/')
+    return null
+  }
+
   const { title, deadline, complexity, approximatedTime, description } = task
   const typeMultiplyer = approximatedTime.type === 'h' ? 60 : 1
   const aproxTimeInMin = Number(approximatedTime.value) * typeMultiplyer
@@ -68,6 +77,19 @@ const StartTask = () => {
 
   const infoOpen = Boolean(infoAnchorEl)
   const infoId = infoOpen ? 'info' : undefined
+
+  const handleTaskComplete = () => {
+    console.log('Removing task with ID:', id)
+    console.log('Task data:', task)
+
+    // Adding a small delay to see "done" message
+    setTimeout(() => {
+      removeTask(id)
+
+      // Forcing a page refresh to update Home screen
+      window.location.href = '/'
+    }, 1500)
+  }
 
   return (
     <Box flex={1} sx={{ width: '100%', overflowY: 'hidden', background: '#fafcff' }}>
@@ -172,9 +194,31 @@ const StartTask = () => {
           }
           <Card sx={{ borderRadius: '2rem', width: '100%', position: 'relative', top: '-5rem' }}>
             <CardContent ref={timerRef}>
-              {timerStarted && <Timer studyTechnique={studyTechnique} studyDuration={aproxTimeInMin} learningIntervalTime={parseFloat(learningInterval)} breakIntervalTime={parseFloat(breakInterval)} />}
+              {timerStarted && <Timer
+                studyTechnique={studyTechnique}
+                studyDuration={aproxTimeInMin}
+                learningIntervalTime={parseFloat(learningInterval)}
+                breakIntervalTime={parseFloat(breakInterval)}
+                onTaskComplete={handleTaskComplete}
+              />}
             </CardContent>
           </Card>
+          {
+          timerStarted && (
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={() => {
+              console.log('Manual delete for task:', id)
+              removeTask(id)
+              window.location.href = '/'
+            }}
+            sx={{ mt: 2 }}
+          >
+            DELETE TASK (TEST)
+          </Button>
+          )
+}
           <Box />
         </Stack>
       </Stack>
