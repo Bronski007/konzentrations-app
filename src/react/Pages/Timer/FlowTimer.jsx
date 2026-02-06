@@ -5,7 +5,7 @@ import { Button, Stack } from '@mui/material'
 
 import displayTime from '../../../hooks/displayTime'
 
-const FlowTimer = ({ studyDuration, onTaskComplete }) => {
+const FlowTimer = ({ studyDuration, isPaused, onTaskComplete }) => {
   const [time, setTime] = useState(0)
   const [timePassed, setTimePassed] = useState(0)
   const [isBreak, setBreak] = useState(false)
@@ -29,6 +29,7 @@ const FlowTimer = ({ studyDuration, onTaskComplete }) => {
       }
 
       const interval = setInterval(() => {
+        if (isPaused) return
         if (studyDuration > timePassed) {
           setTime(isBreak ? time - 1 : time + 1)
           if (isBreak) {
@@ -44,7 +45,7 @@ const FlowTimer = ({ studyDuration, onTaskComplete }) => {
         clearInterval(interval)
       }
     }
-  }, [time, timePassed, isBreak, studyDuration]) // Added dependencies
+  }, [time, timePassed, isBreak, studyDuration, isPaused]) // Added dependencies
 
   return (
     <Stack spacing={2} alignItems="center">
@@ -67,7 +68,7 @@ const FlowTimer = ({ studyDuration, onTaskComplete }) => {
         total passed
       </Typography>
 
-      <Button fullWidth sx={{ borderRadius: '2rem' }} variant="contained" onClick={() => { switchToBreak() }} disabled={isBreak || studyDuration === timePassed}>
+      <Button fullWidth sx={{ borderRadius: '2rem' }} variant="contained" onClick={() => { switchToBreak() }} disabled={time < 60 || isBreak || studyDuration === timePassed}>
         break
       </Button>
 
@@ -78,6 +79,7 @@ const FlowTimer = ({ studyDuration, onTaskComplete }) => {
 
 FlowTimer.propTypes = {
   studyDuration: PropTypes.number,
+  isPaused: PropTypes.bool,
   onTaskComplete: PropTypes.func
 }
 

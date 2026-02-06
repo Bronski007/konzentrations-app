@@ -4,6 +4,7 @@ import { Box, Stack, Typography, Card, CardContent, Button, Rating, Fab, ToggleB
 import CircleIcon from '@mui/icons-material/Circle'
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import PauseIcon from '@mui/icons-material/Pause'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
@@ -16,6 +17,7 @@ import Timer from './Timer/Timer'
 
 const StartTask = () => {
   const [timerStarted, setTimerStarted] = useState(false)
+  const [timerPaused, setTimerPaused] = useState(false)
   const [atPageTop, setAtPageTop] = useState(true)
   const [studyTechnique, setStudyTechnique] = useState('pomodoro')
   const [learningInterval, setLearningInterval] = useState(25)
@@ -186,9 +188,16 @@ const StartTask = () => {
                 </Stack>
               </CardContent>
             </Card>
-            <Button sx={{ borderRadius: '2rem' }} variant="contained" fullWidth endIcon={<PlayArrowIcon />} onClick={startTimer} disabled={timerStarted}>
+
+            {!timerStarted &&
+            <Button sx={{ borderRadius: '2rem' }} variant="contained" fullWidth endIcon={<PlayArrowIcon />} onClick={startTimer}>
               <Typography variant="button">Start</Typography>
-            </Button>
+            </Button>}
+            {timerStarted &&
+            <Button sx={{ borderRadius: '2rem' }} variant="contained" fullWidth endIcon={(timerPaused ? <PlayArrowIcon /> : <PauseIcon />)} onClick={() => setTimerPaused(!timerPaused)}>
+              <Typography variant="button">{(timerPaused ? 'Continue' : 'Pause')}</Typography>
+            </Button>}
+
           </Stack>
           {
             timerStarted && atPageTop &&
@@ -223,6 +232,7 @@ const StartTask = () => {
                 studyDuration={aproxTimeInMin}
                 learningIntervalTime={parseFloat(learningInterval)}
                 breakIntervalTime={parseFloat(breakInterval)}
+                isPaused={timerPaused}
                 onTaskComplete={handleTaskComplete}
               />}
             </CardContent>
