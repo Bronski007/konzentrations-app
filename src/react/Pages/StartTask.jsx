@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { useParams } from 'react-router'
+import { useParams, useNavigate } from 'react-router'
 import { Box, Stack, Typography, Card, CardContent, Button, Rating, Fab, ToggleButton, ToggleButtonGroup, TextField, InputAdornment, Popover, IconButton } from '@mui/material'
 import CircleIcon from '@mui/icons-material/Circle'
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined'
@@ -23,11 +23,20 @@ const StartTask = () => {
   const [infoAnchorEl, setInfoAnchorEl] = useState(null)
   const timerRef = useRef(null)
   const topRef = useRef(null)
+  const navigate = useNavigate()
 
   // Data fetching
-  const { getTask } = useTasks()
+  const { getTask, removeTask, tasks: allTasks } = useTasks()
   const { id } = useParams()
   const task = getTask(id)
+
+  if (!task) {
+    // Task doesn't exist (was already deleted)
+    console.log('Task not found. Available tasks: ', allTasks)
+    navigate('/')
+    return null
+  }
+
   const { title, deadline, complexity, approximatedTime, description } = task
   const typeMultiplyer = approximatedTime.type === 'h' ? 60 : 1
   const aproxTimeInMin = Number(approximatedTime.value) * typeMultiplyer
@@ -68,6 +77,43 @@ const StartTask = () => {
 
   const infoOpen = Boolean(infoAnchorEl)
   const infoId = infoOpen ? 'info' : undefined
+
+  const handleTaskComplete = () => {
+    console.log('Timer completed for task:', title)
+    console.log('Task ID to remove:', id)
+
+    try {
+      const currentTasks = JSON.parse(localStorage.getItem('tasks_data') || '[]')
+      console.log('Tasks in localStorage before:', currentTasks.length)
+
+      const newTasks = currentTasks.filter(t => t.id !== id)
+      console.log('Tasks in localStorage after:', newTasks.length)
+
+      // localStorage update
+      localStorage.setItem('tasks_data', JSON.stringify(newTasks))
+
+      // react state update
+      removeTask(id)
+
+      console.log('Task removed successfully from localStorage')
+    } catch (error) {
+      console.error('Error removing task:', error)
+    }
+
+    // eslint-disable-next-line no-alert
+    alert(`Task "${title}" completed! It will be removed from your list.`)
+
+    setTimeout(() => {
+      console.log('Navigating to home page...')
+
+      navigate('/', { replace: true })
+
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: 'tasks_data',
+        newValue: localStorage.getItem('tasks_data')
+      }))
+    }, 1000)
+  }
 
   return (
     <Box flex={1} sx={{ width: '100%', overflowY: 'hidden', background: '#fafcff' }}>
@@ -172,9 +218,31 @@ const StartTask = () => {
           }
           <Card sx={{ borderRadius: '2rem', width: '100%', position: 'relative', top: '-5rem' }}>
             <CardContent ref={timerRef}>
-              {timerStarted && <Timer studyTechnique={studyTechnique} studyDuration={aproxTimeInMin} learningIntervalTime={parseFloat(learningInterval)} breakIntervalTime={parseFloat(breakInterval)} />}
+              {timerStarted && <Timer
+                studyTechnique={studyTechnique}
+                studyDuration={aproxTimeInMin}
+                learningIntervalTime={parseFloat(learningInterval)}
+                breakIntervalTime={parseFloat(breakInterval)}
+                onTaskComplete={handleTaskComplete}
+              />}
             </CardContent>
           </Card>
+          {
+          timerStarted && (
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={() => {
+              console.log('Manual delete for task:', id)
+              removeTask(id)
+              window.location.href = '/'
+            }}
+            sx={{ mt: 2 }}
+          >
+            DELETE TASK
+          </Button>
+          )
+}
           <Box />
         </Stack>
       </Stack>

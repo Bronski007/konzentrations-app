@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const displayTime = (total_seconds) => {
   const seconds = total_seconds % 60
   const minutes = ((total_seconds - seconds) / 60) % 60

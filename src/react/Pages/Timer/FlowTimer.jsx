@@ -5,7 +5,7 @@ import { Button, Stack } from '@mui/material'
 
 import displayTime from '../../../hooks/displayTime'
 
-const FlowTimer = ({ studyDuration }) => {
+const FlowTimer = ({ studyDuration, onTaskComplete }) => {
   const [time, setTime] = useState(0)
   const [timePassed, setTimePassed] = useState(0)
   const [isBreak, setBreak] = useState(false)
@@ -14,6 +14,13 @@ const FlowTimer = ({ studyDuration }) => {
     setBreak(true)
     setTime(Math.floor(time / 5))
   }
+
+  useEffect(() => {
+    // Check if the task is completed and call the onTaskComplete callback
+    if (timePassed === studyDuration && onTaskComplete) {
+      onTaskComplete()
+    }
+  }, [timePassed, studyDuration, onTaskComplete])
 
   useEffect(() => {
     if (studyDuration > timePassed) {
@@ -31,13 +38,13 @@ const FlowTimer = ({ studyDuration }) => {
           }
         }
         setTimePassed(timePassed + 1)
-      }, 100)
+      }, 1000) // FIXING the useEffect interval time from 100 to 1000 ms for real-time seconds
 
       return () => {
         clearInterval(interval)
       }
     }
-  })
+  }, [time, timePassed, isBreak, studyDuration]) // Added dependencies
 
   return (
     <Stack spacing={2} alignItems="center">
@@ -70,7 +77,8 @@ const FlowTimer = ({ studyDuration }) => {
 }
 
 FlowTimer.propTypes = {
-  studyDuration: PropTypes.number
+  studyDuration: PropTypes.number,
+  onTaskComplete: PropTypes.func
 }
 
 export default FlowTimer
