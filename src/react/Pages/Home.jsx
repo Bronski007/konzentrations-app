@@ -61,7 +61,7 @@ const Home = () => {
             bottom: 16,
             right: 16
           }}
-          aria-label="add task"
+          aria-label="Add Task"
         >
           <AddIcon />
         </Fab>

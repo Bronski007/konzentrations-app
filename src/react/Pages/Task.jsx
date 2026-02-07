@@ -15,7 +15,7 @@ const initialItems = {
   title: '',
   description: '',
   approximatedTime: { value: '', type: 'min' },
-  complexity: 1
+  importance: 1
 }
 
 const Task = () => {
@@ -55,9 +55,14 @@ const Task = () => {
           spacing={2}
         >
           <TextField
-            label="title"
+            label="Title"
             value={items.title}
             size="small"
+            slotProps={{
+              htmlInput: {
+                maxLength: 20
+              }
+            }}
             required
             onChange={(e) => {
               const clonedItems = structuredClone(items)
@@ -67,7 +72,7 @@ const Task = () => {
           />
 
           <TextField
-            label="approximated time"
+            label="Approximated Time"
             size="small"
             type="number"
             value={items.approximatedTime.value}
@@ -129,13 +134,13 @@ const Task = () => {
             }}
           >
             <Typography>
-              Complexity:
+              Importance:
               {' '}
-              {items.complexity || 1}
+              {items.importance || 1}
             </Typography>
 
             <Slider
-              value={items.complexity || 1}
+              value={items.importance || 1}
               min={1}
               max={5}
               step={1}
@@ -143,14 +148,14 @@ const Task = () => {
               valueLabelDisplay="auto"
               onChange={(_, newValue) => {
                 const clonedItems = structuredClone(items)
-                clonedItems.complexity = newValue
+                clonedItems.importance = newValue
                 setItems(clonedItems)
               }}
             />
           </Box>
 
           <TextField
-            label="description"
+            label="Description"
             value={items.description}
             slotProps={{
               htmlInput: {
@@ -178,7 +183,7 @@ const Task = () => {
               title: items.title,
               description: items.description,
               approximatedTime: items.approximatedTime,
-              complexity: Number(items.complexity),
+              importance: Number(items.importance),
               deadline: deadlineDate
             })
             navigate(-1)
