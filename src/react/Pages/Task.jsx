@@ -12,7 +12,6 @@ import useTasks from '../../hooks/useTasks'
 import TopNavigationBar from '../TopNavigationBar'
 
 const initialItems = {
-  topic: '',
   title: '',
   description: '',
   approximatedTime: { value: '', type: 'min' },
@@ -55,18 +54,6 @@ const Task = () => {
           }}
           spacing={2}
         >
-          <TextField
-            label="topic"
-            value={items.topic}
-            size="small"
-            required
-            onChange={(e) => {
-              const clonedItems = structuredClone(items)
-              clonedItems.topic = e.target.value
-              setItems(clonedItems)
-            }}
-          />
-
           <TextField
             label="title"
             value={items.title}
@@ -118,6 +105,7 @@ const Task = () => {
               label="Deadline"
               format="DD/MM/YYYY"
               value={deadlineDate}
+              disablePast
               required
               slotProps={{
                 textField: {
@@ -149,7 +137,7 @@ const Task = () => {
             <Slider
               value={items.complexity || 1}
               min={1}
-              max={10}
+              max={5}
               step={1}
               marks
               valueLabelDisplay="auto"
@@ -164,6 +152,11 @@ const Task = () => {
           <TextField
             label="description"
             value={items.description}
+            slotProps={{
+              htmlInput: {
+                maxLength: 150
+              }
+            }}
             multiline
             rows="5"
             size="small"
@@ -182,7 +175,6 @@ const Task = () => {
             // Creates a new task object from the current item values and adds
             addTask({
               id: nanoid(),
-              topic: items.topic,
               title: items.title,
               description: items.description,
               approximatedTime: items.approximatedTime,

@@ -80,7 +80,7 @@ const StartTask = () => {
               <Card sx={{ borderRadius: '2rem' }}>
                 <CardContent>
                   <Typography variant="h5" gutterBottom>complexity</Typography>
-                  <Rating size="small" value={complexity} readOnly max={10} icon={<CircleIcon fontSize="inherit" color="error" />} emptyIcon={<CircleOutlinedIcon fontSize="inherit" />} />
+                  <Rating size="small" value={complexity} readOnly max={5} icon={<CircleIcon fontSize="inherit" color="error" />} emptyIcon={<CircleOutlinedIcon fontSize="inherit" />} />
                 </CardContent>
               </Card>
               <Card sx={{ borderRadius: '2rem', flex: 1 }}>

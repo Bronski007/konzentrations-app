@@ -35,7 +35,9 @@ const appTheme = createTheme({
   },
   palette: {
     primary: {
-      main: '#3f51b5'
+      main: '#3f51b5',
+      divider: '#6476dc',
+      light: '#aeb9f8'
     },
     secondary: {
       main: '#722093'

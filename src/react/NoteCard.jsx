@@ -3,23 +3,17 @@ import React from 'react'
 import { Stack, Typography } from '@mui/material'
 import PropTypes from 'prop-types'
 
-const getColorByComplexity = (complexity) => {
-  if (complexity <= 3) return '#cdfee2'
-  if (complexity <= 5) return '#8ff77c'
-  if (complexity <= 7) return '#f3bd8a'
-  return '#ff8787'
-}
-
-const NoteCard = ({ task: { title, approximatedTime: { value, type }, complexity, deadline, description }, onClick }) => (
+const NoteCard = ({ task: { title, approximatedTime: { value, type }, deadline, description }, onClick }) => (
   <Stack
     direction="column"
+    overflow="hidden"
     spacing={1}
     onClick={onClick}
     sx={{
       width: '95%',
       borderRadius: 3,
       padding: 1.5,
-      bgcolor: getColorByComplexity(complexity),
+      bgcolor: 'primary.light',
       color: '#0f172a'
     }}
   >
@@ -47,7 +41,7 @@ const NoteCard = ({ task: { title, approximatedTime: { value, type }, complexity
       </Typography>
 
     </Stack>
-    <Typography variant="body2">
+    <Typography variant="body2" overflow="clip">
       {description}
     </Typography>
   </Stack>
@@ -57,7 +51,6 @@ NoteCard.propTypes = {
   task: PropTypes.shape({
     title: PropTypes.string.isRequired,
     deadline: PropTypes.string.isRequired,
-    complexity: PropTypes.number.isRequired,
     approximatedTime: PropTypes.object.isRequired,
     description: PropTypes.string.isRequired
   }).isRequired,
