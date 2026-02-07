@@ -11,7 +11,7 @@ const NoteCard = ({ task: { title, approximatedTime: { value, type }, deadline, 
     onClick={onClick}
     sx={{
       width: '95%',
-      borderRadius: 3,
+      borderRadius: '1rem',
       padding: 1.5,
       bgcolor: 'primary.light',
       color: '#0f172a'

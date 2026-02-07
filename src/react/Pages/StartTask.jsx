@@ -77,7 +77,7 @@ const StartTask = () => {
         <Stack spacing={2} sx={{ height: '46%', justifyContent: 'space-between' }}>
           <Stack spacing={2} sx={{ flex: 1 }}>
             <Stack direction="row" spacing={2} sx={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-              <Card sx={{ borderRadius: '2rem' }}>
+              <Card sx={{ borderRadius: '2rem', flex: 1 }}>
                 <CardContent>
                   <Typography variant="h5" gutterBottom>Importance</Typography>
                   <Rating size="small" value={importance} readOnly max={5} icon={<CircleIcon fontSize="inherit" color="error" />} emptyIcon={<CircleOutlinedIcon fontSize="inherit" />} />
@@ -101,7 +101,7 @@ const StartTask = () => {
                     <Typography variant="body2" color="textSecondary">{new Date(deadline).toLocaleDateString('de-DE', { year: 'numeric', month: '2-digit', day: '2-digit' })}</Typography>
                   </Stack>
                 </Stack>
-                <Typography variant="body1" sx={{ wordWrap: 'break-word', scrollbarWidth: 'none', maxHeight: '15vh' }}>{description}</Typography>
+                <Typography variant="body1" sx={{ wordWrap: 'break-word', scrollbarWidth: 'none' }}>{description}</Typography>
               </CardContent>
             </Card>
             <Card sx={{ borderRadius: '2rem' }}>

@@ -46,7 +46,7 @@ const Task = () => {
       >
         <Card sx={{ borderRadius: '2rem', width: '90%' }}>
           <CardContent>
-            <Typography variant="h5" gutterBottom>Create task</Typography>
+            <Typography variant="h5" gutterBottom>New Task</Typography>
             <Stack
               spacing={2}
             >
