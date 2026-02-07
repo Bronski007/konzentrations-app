@@ -12,11 +12,10 @@ import useTasks from '../../hooks/useTasks'
 import TopNavigationBar from '../TopNavigationBar'
 
 const initialItems = {
-  topic: '',
   title: '',
   description: '',
   approximatedTime: { value: '', type: 'min' },
-  complexity: 1
+  importance: 1
 }
 
 const Task = () => {
@@ -28,13 +27,11 @@ const Task = () => {
 
   return (
     <Box
+      flex={1}
       sx={{
-        height: '100vh',
         width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
         overflow: 'hidden',
-        background: '#fafcff'
+        bgcolor: 'primary.background'
       }}
     >
       <TopNavigationBar name="Task" />
@@ -43,39 +40,26 @@ const Task = () => {
         spacing={2}
         alignItems="center"
         sx={{
-          width: '100%',
           overflowY: 'auto',
-          overflowX: 'hidden',
-          margin: '0 auto'
+          overflowX: 'hidden'
         }}
       >
         <Card sx={{ borderRadius: '2rem', width: '90%' }}>
           <CardContent>
-            <Typography variant="h5" gutterBottom>create task</Typography>
+            <Typography variant="h5" gutterBottom>New Task</Typography>
             <Stack
-              sx={{
-                width: '100%',
-                margin: '0 auto'
-              }}
               spacing={2}
             >
               <TextField
-                label="topic"
-                slotProps={{ input: { sx: { borderRadius: '1rem' } } }}
-                value={items.topic}
-                size="small"
-                onChange={(e) => {
-                  const clonedItems = structuredClone(items)
-                  clonedItems.topic = e.target.value
-                  setItems(clonedItems)
-                }}
-              />
-
-              <TextField
-                label="title"
-                slotProps={{ input: { sx: { borderRadius: '1rem' } } }}
+                label="Title"
                 value={items.title}
                 size="small"
+                slotProps={{
+                  input: { sx: { borderRadius: '1rem' } },
+                  htmlInput: {
+                    maxLength: 20
+                  }
+                }}
                 onChange={(e) => {
                   const clonedItems = structuredClone(items)
                   clonedItems.title = e.target.value
@@ -84,7 +68,7 @@ const Task = () => {
               />
 
               <TextField
-                label="approximated time"
+                label="Approximated Time"
                 size="small"
                 type="number"
                 value={items.approximatedTime.value}
@@ -126,9 +110,10 @@ const Task = () => {
 
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
-                  label="deadline"
+                  label="Deadline"
                   format="DD/MM/YYYY"
                   value={deadlineDate}
+                  disablePast
                   slotProps={{
                     textField: {
                       size: 'small',
@@ -161,30 +146,33 @@ const Task = () => {
                 }}
               >
                 <Typography>
-                  complexity:
+                  Importance:
                   {' '}
-                  {items.complexity || 1}
+                  {items.importance || 1}
                 </Typography>
 
                 <Slider
-                  value={items.complexity || 1}
+                  value={items.importance || 1}
                   min={1}
-                  max={10}
+                  max={5}
                   step={1}
                   marks
                   valueLabelDisplay="auto"
                   onChange={(_, newValue) => {
                     const clonedItems = structuredClone(items)
-                    clonedItems.complexity = newValue
+                    clonedItems.importance = newValue
                     setItems(clonedItems)
                   }}
                 />
               </Stack>
 
               <TextField
-                label="description"
-                slotProps={{ input: { sx: { borderRadius: '1rem' } } }}
+                label="Description"
                 value={items.description}
+                slotProps={{
+                  input: { sx: { borderRadius: '1rem' } },
+                  htmlInput: { maxLength: 300 }
+                }}
                 multiline
                 rows="5"
                 size="small"
@@ -204,17 +192,16 @@ const Task = () => {
             // Creates a new task object from the current item values and adds
             addTask({
               id: nanoid(),
-              topic: items.topic,
               title: items.title,
               description: items.description,
               approximatedTime: items.approximatedTime,
-              complexity: Number(items.complexity),
+              importance: Number(items.importance),
               deadline: deadlineDate
             })
             navigate(-1)
           }}
           sx={{ borderRadius: '2rem', width: '90%' }}
-          disabled={items.topic.trim() === '' || items.title.trim() === '' || items.description.trim() === '' || items.approximatedTime.value.trim() === '' || deadlineDate === null}
+          disabled={items.title.trim() === '' || items.description.trim() === '' || items.approximatedTime.value.trim() === '' || deadlineDate === null}
         >
           Create Task
         </Button>

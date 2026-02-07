@@ -29,7 +29,8 @@ const TopNavigationBar = ({ name }) => {
           bgcolor: 'primary.main'
         }}
       >
-        {!isRoot && (
+        {
+          isRoot ? <Box marginLeft={5} /> :
           <IconButton
             onClick={() => navigate(-1)}
           >
@@ -39,8 +40,7 @@ const TopNavigationBar = ({ name }) => {
               }}
             />
           </IconButton>
-        )}
-
+        }
         <Typography
           variant="h4"
           sx={{
@@ -59,7 +59,7 @@ const TopNavigationBar = ({ name }) => {
         sx={{
           borderBottomWidth: 3,
           marginBottom: 2,
-          bgcolor: 'primary.light'
+          bgcolor: 'primary.divider'
         }}
       />
     </Box>
