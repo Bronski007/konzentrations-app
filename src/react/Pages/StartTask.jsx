@@ -70,7 +70,7 @@ const StartTask = () => {
   const infoId = infoOpen ? 'info' : undefined
 
   return (
-    <Box flex={1} sx={{ width: '100%', overflowY: 'hidden', background: '#fafcff' }}>
+    <Box flex={1} sx={{ width: '100%', overflowY: 'hidden', bgcolor: 'primary.background' }}>
       <div ref={topRef} />
       <TopNavigationBar name={title} />
       <Stack spacing={2} sx={{ height: '200%', m: '1rem', justifyContent: 'space-between' }}>

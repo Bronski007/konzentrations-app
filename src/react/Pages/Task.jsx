@@ -31,7 +31,7 @@ const Task = () => {
       sx={{
         width: '100%',
         overflow: 'hidden',
-        background: '#fafcff'
+        bgcolor: 'primary.background'
       }}
     >
       <TopNavigationBar name="Task" />
@@ -40,20 +40,14 @@ const Task = () => {
         spacing={2}
         alignItems="center"
         sx={{
-          width: '100%',
           overflowY: 'auto',
-          overflowX: 'hidden',
-          margin: '0 auto'
+          overflowX: 'hidden'
         }}
       >
         <Card sx={{ borderRadius: '2rem', width: '90%' }}>
           <CardContent>
             <Typography variant="h5" gutterBottom>Create task</Typography>
             <Stack
-              sx={{
-                width: '100%',
-                margin: '0 auto'
-              }}
               spacing={2}
             >
               <TextField
