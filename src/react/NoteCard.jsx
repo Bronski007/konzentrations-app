@@ -41,7 +41,14 @@ const NoteCard = ({ task: { title, approximatedTime: { value, type }, deadline, 
       </Typography>
 
     </Stack>
-    <Typography variant="body2" overflow="clip">
+    <Typography
+      variant="body2"
+      sx={{
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap'
+      }}
+    >
       {description}
     </Typography>
   </Stack>

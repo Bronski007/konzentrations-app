@@ -101,7 +101,7 @@ const StartTask = () => {
                     <Typography variant="body2" color="textSecondary">{new Date(deadline).toLocaleDateString('de-DE', { year: 'numeric', month: '2-digit', day: '2-digit' })}</Typography>
                   </Stack>
                 </Stack>
-                <Typography variant="body1" sx={{ overflow: 'auto', scrollbarWidth: 'none', maxHeight: '15vh' }}>{description}</Typography>
+                <Typography variant="body1" sx={{ wordWrap: 'break-word', scrollbarWidth: 'none', maxHeight: '15vh' }}>{description}</Typography>
               </CardContent>
             </Card>
             <Card sx={{ borderRadius: '2rem' }}>

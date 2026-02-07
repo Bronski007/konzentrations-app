@@ -159,7 +159,7 @@ const Task = () => {
             value={items.description}
             slotProps={{
               htmlInput: {
-                maxLength: 150
+                maxLength: 300
               }
             }}
             multiline
