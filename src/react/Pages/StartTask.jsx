@@ -1,21 +1,79 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { useParams } from 'react-router'
+import { useParams, useNavigate } from 'react-router'
 import { Box, Stack, Typography, Card, CardContent, Button, Rating, Fab, ToggleButton, ToggleButtonGroup, TextField, InputAdornment, Popover, IconButton } from '@mui/material'
 import CircleIcon from '@mui/icons-material/Circle'
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import PauseIcon from '@mui/icons-material/Pause'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import CloseIcon from '@mui/icons-material/Close'
 import EventIcon from '@mui/icons-material/Event'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
 
 import useTasks from '../../hooks/useTasks'
 import TopNavigationBar from '../TopNavigationBar'
 import Timer from './Timer/Timer'
 
+// Delete Button and Dialog
+const DeleteButton = () => {
+  const [open, setOpen] = React.useState(false)
+  const { removeTask } = useTasks()
+  const { id } = useParams()
+  return (
+    <>
+      <Button
+        variant="contained"
+        color="error"
+        fullWidth
+        onClick={() => { setOpen(true) }}
+        sx={{ mt: 2, borderRadius: '2rem' }}
+      >
+        DELETE TASK
+      </Button>
+      <Dialog
+        open={open}
+        onClose={() => (setOpen(false))}
+      >
+        <DialogContent>
+          <DialogTitle sx={{ marginLeft: -3 }}>
+            Delete Task?
+          </DialogTitle>
+          <DialogContentText>
+            Task will be deleted permanently.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => (setOpen(false))}
+            autoFocus
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              console.log('Manual delete for task:', id)
+              removeTask(id)
+              window.location.href = '/'
+            }}
+            color="error"
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
+  )
+}
+
 const StartTask = () => {
   const [timerStarted, setTimerStarted] = useState(false)
+  const [timerPaused, setTimerPaused] = useState(false)
   const [atPageTop, setAtPageTop] = useState(true)
   const [studyTechnique, setStudyTechnique] = useState('pomodoro')
   const [learningInterval, setLearningInterval] = useState(25)
@@ -23,9 +81,10 @@ const StartTask = () => {
   const [infoAnchorEl, setInfoAnchorEl] = useState(null)
   const timerRef = useRef(null)
   const topRef = useRef(null)
+  const navigate = useNavigate()
 
   // Data fetching
-  const { getTask } = useTasks()
+  const { getTask, removeTask } = useTasks()
   const { id } = useParams()
   const task = getTask(id)
   const { title, deadline, importance, approximatedTime, description } = task
@@ -69,10 +128,47 @@ const StartTask = () => {
   const infoOpen = Boolean(infoAnchorEl)
   const infoId = infoOpen ? 'info' : undefined
 
+  const handleTaskComplete = () => {
+    console.log('Timer completed for task:', title)
+    console.log('Task ID to remove:', id)
+
+    try {
+      const currentTasks = JSON.parse(localStorage.getItem('tasks_data') || '[]')
+      console.log('Tasks in localStorage before:', currentTasks.length)
+
+      const newTasks = currentTasks.filter(t => t.id !== id)
+      console.log('Tasks in localStorage after:', newTasks.length)
+
+      // localStorage update
+      localStorage.setItem('tasks_data', JSON.stringify(newTasks))
+
+      // react state update
+      removeTask(id)
+
+      console.log('Task removed successfully from localStorage')
+    } catch (error) {
+      console.error('Error removing task:', error)
+    }
+
+    // eslint-disable-next-line no-alert
+    alert(`Task "${title}" completed! It will be removed from your list.`)
+
+    setTimeout(() => {
+      console.log('Navigating to home page...')
+
+      navigate('/', { replace: true })
+
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: 'tasks_data',
+        newValue: localStorage.getItem('tasks_data')
+      }))
+    }, 1000)
+  }
+
   return (
     <Box flex={1} sx={{ width: '100%', overflowY: 'hidden', bgcolor: 'primary.background' }}>
       <div ref={topRef} />
-      <TopNavigationBar name={title} />
+      <TopNavigationBar name={title} xButtonDisabled={timerStarted} />
       <Stack spacing={2} sx={{ height: '200%', m: '1rem', justifyContent: 'space-between' }}>
         <Stack spacing={2} sx={{ height: '46%', justifyContent: 'space-between' }}>
           <Stack spacing={2} sx={{ flex: 1 }}>
@@ -133,7 +229,6 @@ const StartTask = () => {
                     <Typography variant="button">flowmodoro</Typography>
                   </ToggleButton>
                 </ToggleButtonGroup>
-
                 <Stack spacing={2} direction="row" sx={{ display: studyTechnique === 'pomodoro' ? 'flex' : 'none', mt: '1rem' }}>
                   <TextField label="Focus Duration" defaultValue={25} onChange={(e) => setLearningInterval(e.target.value)} disabled={timerStarted} slotProps={{ input: { endAdornment: <InputAdornment position="end">min</InputAdornment>, sx: { borderRadius: '2rem' } } }} />
                   <TextField label="Break Duration" defaultValue={5} onChange={(e) => setBreakInterval(e.target.value)} disabled={timerStarted} slotProps={{ input: { endAdornment: <InputAdornment position="end">min</InputAdornment>, sx: { borderRadius: '2rem' } } }} />
@@ -143,6 +238,8 @@ const StartTask = () => {
             <Button sx={{ borderRadius: '2rem' }} variant="contained" fullWidth endIcon={<PlayArrowIcon />} onClick={startTimer} disabled={timerStarted}>
               <Typography variant="button">Start</Typography>
             </Button>
+            <DeleteButton />
+
           </Stack>
           {
             timerStarted && atPageTop &&
@@ -170,11 +267,42 @@ const StartTask = () => {
             atPageTop &&
             <Box sx={{ height: '7rem' }} />
           }
-          <Card sx={{ borderRadius: '2rem', width: '100%', position: 'relative', top: '-5rem' }}>
+          <Card sx={{ borderRadius: '2rem', width: '100%', position: 'relative' }}>
             <CardContent ref={timerRef}>
-              {timerStarted && <Timer studyTechnique={studyTechnique} studyDuration={aproxTimeInMin} learningIntervalTime={parseFloat(learningInterval)} breakIntervalTime={parseFloat(breakInterval)} />}
+              {timerStarted && <Timer
+                studyTechnique={studyTechnique}
+                studyDuration={aproxTimeInMin}
+                learningIntervalTime={parseFloat(learningInterval)}
+                breakIntervalTime={parseFloat(breakInterval)}
+                isPaused={timerPaused}
+                onTaskComplete={handleTaskComplete}
+              />}
             </CardContent>
           </Card>
+          {
+          timerStarted && (
+            <Stack>
+              {timerStarted &&
+              <Button
+                variant="outlined"
+                endIcon={(timerPaused ? <PlayArrowIcon /> : <PauseIcon />)}
+                onClick={() => setTimerPaused(!timerPaused)}
+              >
+                {(timerPaused ? 'Continue' : 'Pause')}
+              </Button>}
+              <Button
+                variant="outlined"
+                color="error"
+                onClick={() => {
+                  navigate(-1)
+                }}
+                sx={{ mt: 2 }}
+              >
+                QUIT TASK
+              </Button>
+            </Stack>
+          )
+          }
           <Box />
         </Stack>
       </Stack>

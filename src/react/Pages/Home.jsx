@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 import { Stack, Fab } from '@mui/material'
@@ -13,6 +13,12 @@ const Home = () => {
   const navigate = useNavigate()
   const { tasks } = useTasks()
 
+  // Logging when tasks change
+  useEffect(() => {
+    console.log('Home component rendered with tasks:', tasks)
+    console.log('Task IDs:', tasks.map(t => t.id))
+  }, [tasks])
+
   return (
     <Stack
       flex="1"
@@ -21,7 +27,7 @@ const Home = () => {
         width: '100%'
       }}
     >
-      <TopNavigationBar name="Todo Planner" />
+      <TopNavigationBar name="Todo Planner" xButtonDisabled />
       <Stack
         flex="1 1 auto"
         direction="column"
