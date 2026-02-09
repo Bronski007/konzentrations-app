@@ -5,7 +5,7 @@ import { Stack, Typography, Divider, IconButton, Box } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import PropTypes from 'prop-types'
 
-const TopNavigationBar = ({ name, disabled }) => {
+const TopNavigationBar = ({ name, xButtonDisabled }) => {
   const navigate = useNavigate()
 
   return (
@@ -27,7 +27,7 @@ const TopNavigationBar = ({ name, disabled }) => {
         }}
       >
         {
-          disabled ? <Box marginLeft={5} /> :
+          xButtonDisabled ? <Box marginLeft={5} /> :
           <IconButton
             onClick={() => navigate(-1)}
           >
@@ -65,7 +65,7 @@ const TopNavigationBar = ({ name, disabled }) => {
 
 TopNavigationBar.propTypes = {
   name: PropTypes.string.isRequired,
-  disabled: PropTypes.bool
+  xButtonDisabled: PropTypes.bool
 }
 
 export default TopNavigationBar

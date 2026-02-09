@@ -168,7 +168,7 @@ const StartTask = () => {
   return (
     <Box flex={1} sx={{ width: '100%', overflowY: 'hidden', bgcolor: 'primary.background' }}>
       <div ref={topRef} />
-      <TopNavigationBar name={title} disabled={timerStarted} />
+      <TopNavigationBar name={title} xButtonDisabled={timerStarted} />
       <Stack spacing={2} sx={{ height: '200%', m: '1rem', justifyContent: 'space-between' }}>
         <Stack spacing={2} sx={{ height: '46%', justifyContent: 'space-between' }}>
           <Stack spacing={2} sx={{ flex: 1 }}>
