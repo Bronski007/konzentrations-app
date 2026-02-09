@@ -5,7 +5,6 @@ import FlowTimer from './FlowTimer'
 import PomodoroTimer from './PomodoroTimer'
 
 const Timer = ({ studyTechnique, studyDuration, learningIntervalTime, breakIntervalTime, onTaskComplete }) => {
-  // converting minutes to seconds for displayTime funtion
   if (studyTechnique === 'pomodoro') {
     return (
       <PomodoroTimer

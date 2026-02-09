@@ -16,7 +16,6 @@ const FlowTimer = ({ studyDuration, onTaskComplete }) => {
   }
 
   useEffect(() => {
-    // Check if the task is completed and call the onTaskComplete callback
     if (timePassed === studyDuration && onTaskComplete) {
       onTaskComplete()
     }
@@ -38,13 +37,13 @@ const FlowTimer = ({ studyDuration, onTaskComplete }) => {
           }
         }
         setTimePassed(timePassed + 1)
-      }, 1000) // FIXING the useEffect interval time from 100 to 1000 ms for real-time seconds
+      }, 1000)
 
       return () => {
         clearInterval(interval)
       }
     }
-  }, [time, timePassed, isBreak, studyDuration]) // Added dependencies
+  }, [time, timePassed, isBreak, studyDuration])
 
   return (
     <Stack spacing={2} alignItems="center">

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
 import { useNavigate } from 'react-router-dom'
 import { Stack, Fab } from '@mui/material'
@@ -12,12 +12,6 @@ import NoteCard from '../NoteCard'
 const Home = () => {
   const navigate = useNavigate()
   const { tasks } = useTasks()
-
-  // Logging when tasks change
-  useEffect(() => {
-    console.log('Home component rendered with tasks:', tasks)
-    console.log('Task IDs:', tasks.map(t => t.id))
-  }, [tasks])
 
   return (
     <Stack
