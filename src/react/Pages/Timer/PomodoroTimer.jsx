@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import displayTime from '../../../hooks/displayTime'
 
 const PomodoroTimer = ({ studyDuration, learningIntervalTime, breakIntervalTime, isPaused, onTaskComplete }) => {
-  const [sessionTime, setSessionTime] = useState(learningIntervalTime)
+  const [sessionTime, setSessionTime] = useState(Math.min(learningIntervalTime, studyDuration))
   const [totalStudyTimeRemaining, setTotalStudyTimeRemaining] = useState(studyDuration)
   const [isBreak, setIsBreak] = useState(false)
   const [sessionsCompleted, setSessionsCompleted] = useState(0)
