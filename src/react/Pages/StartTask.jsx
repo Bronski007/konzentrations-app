@@ -189,14 +189,9 @@ const StartTask = () => {
               </CardContent>
             </Card>
 
-            {!timerStarted &&
-            <Button sx={{ borderRadius: '2rem' }} variant="contained" fullWidth endIcon={<PlayArrowIcon />} onClick={startTimer}>
+            <Button sx={{ borderRadius: '2rem' }} variant="contained" fullWidth endIcon={<PlayArrowIcon />} onClick={startTimer} disabled={timerStarted}>
               <Typography variant="button">Start</Typography>
-            </Button>}
-            {timerStarted &&
-            <Button sx={{ borderRadius: '2rem' }} variant="contained" fullWidth endIcon={(timerPaused ? <PlayArrowIcon /> : <PauseIcon />)} onClick={() => setTimerPaused(!timerPaused)}>
-              <Typography variant="button">{(timerPaused ? 'Continue' : 'Pause')}</Typography>
-            </Button>}
+            </Button>
 
           </Stack>
           {
@@ -225,7 +220,7 @@ const StartTask = () => {
             atPageTop &&
             <Box sx={{ height: '7rem' }} />
           }
-          <Card sx={{ borderRadius: '2rem', width: '100%', position: 'relative', top: '-5rem' }}>
+          <Card sx={{ borderRadius: '2rem', width: '100%', position: 'relative' }}>
             <CardContent ref={timerRef}>
               {timerStarted && <Timer
                 studyTechnique={studyTechnique}
@@ -239,18 +234,30 @@ const StartTask = () => {
           </Card>
           {
           timerStarted && (
-          <Button
-            variant="outlined"
-            color="error"
-            onClick={() => {
-              console.log('Manual delete for task:', id)
-              removeTask(id)
-              window.location.href = '/'
-            }}
-            sx={{ mt: 2 }}
-          >
-            DELETE TASK
-          </Button>
+            <Stack>
+              {timerStarted &&
+              <Button
+                variant="outlined"
+                endIcon={(timerPaused ? <PlayArrowIcon /> : <PauseIcon />)}
+                onClick={() => setTimerPaused(!timerPaused)}
+              >
+                {(timerPaused ? 'Continue' : 'Pause')}
+              </Button>}
+
+              <Button
+                variant="outlined"
+                color="error"
+                onClick={() => {
+                  console.log('Manual delete for task:', id)
+                  removeTask(id)
+                  window.location.href = '/'
+                }}
+                sx={{ mt: 2 }}
+              >
+                DELETE TASK
+              </Button>
+            </Stack>
+
           )
 }
           <Box />
