@@ -14,7 +14,7 @@ import TopNavigationBar from '../TopNavigationBar'
 const initialItems = {
   title: '',
   description: '',
-  approximatedTime: { value: '', type: 'min' },
+  approximatedTime: { value: 0, type: 'min' },
   importance: 1
 }
 
@@ -130,7 +130,7 @@ const Task = () => {
                     }
                   }}
                   onChange={(newDeadline) => {
-                    setDeadlineDate(newDeadline)
+                    setDeadlineDate(newDeadline.endOf('day'))
                   }}
                 />
               </LocalizationProvider>
