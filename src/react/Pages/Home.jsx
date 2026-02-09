@@ -43,7 +43,7 @@ const Home = () => {
         <Stack
           direction="column"
           alignItems="center"
-          spacing={1.5}
+          spacing={2}
           sx={{
             width: '100%',
             flex: '1 1 auto',
@@ -67,7 +67,7 @@ const Home = () => {
             bottom: 16,
             right: 16
           }}
-          aria-label="add task"
+          aria-label="Add Task"
         >
           <AddIcon />
         </Fab>

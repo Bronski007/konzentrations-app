@@ -31,15 +31,7 @@ const StartTask = () => {
   const { getTask, removeTask, tasks: allTasks } = useTasks()
   const { id } = useParams()
   const task = getTask(id)
-
-  if (!task) {
-    // Task doesn't exist (was already deleted)
-    console.log('Task not found. Available tasks: ', allTasks)
-    navigate('/')
-    return null
-  }
-
-  const { title, deadline, complexity, approximatedTime, description } = task
+  const { title, deadline, importance, approximatedTime, description } = task
   const typeMultiplyer = approximatedTime.type === 'h' ? 60 : 1
   const aproxTimeInMin = Number(approximatedTime.value) * typeMultiplyer
 
@@ -118,22 +110,22 @@ const StartTask = () => {
   }
 
   return (
-    <Box flex={1} sx={{ width: '100%', overflowY: 'hidden', background: '#fafcff' }}>
+    <Box flex={1} sx={{ width: '100%', overflowY: 'hidden', bgcolor: 'primary.background' }}>
       <div ref={topRef} />
       <TopNavigationBar name={title} />
       <Stack spacing={2} sx={{ height: '200%', m: '1rem', justifyContent: 'space-between' }}>
         <Stack spacing={2} sx={{ height: '46%', justifyContent: 'space-between' }}>
           <Stack spacing={2} sx={{ flex: 1 }}>
             <Stack direction="row" spacing={2} sx={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-              <Card sx={{ borderRadius: '2rem' }}>
+              <Card sx={{ borderRadius: '2rem', flex: 1 }}>
                 <CardContent>
-                  <Typography variant="h5" gutterBottom>complexity</Typography>
-                  <Rating size="small" value={complexity} readOnly max={10} icon={<CircleIcon fontSize="inherit" color="error" />} emptyIcon={<CircleOutlinedIcon fontSize="inherit" />} />
+                  <Typography variant="h5" gutterBottom>Importance</Typography>
+                  <Rating size="small" value={importance} readOnly max={5} icon={<CircleIcon fontSize="inherit" color="error" />} emptyIcon={<CircleOutlinedIcon fontSize="inherit" />} />
                 </CardContent>
               </Card>
               <Card sx={{ borderRadius: '2rem', flex: 1 }}>
                 <CardContent>
-                  <Typography variant="h5" gutterBottom>duration</Typography>
+                  <Typography variant="h5" gutterBottom>Duration</Typography>
                   <Typography variant="body1">
                     {`${approximatedTime.value}${approximatedTime.type}`}
                   </Typography>
@@ -143,19 +135,19 @@ const StartTask = () => {
             <Card sx={{ borderRadius: '2rem' }}>
               <CardContent>
                 <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between', alignItems: 'flex-start', position: 'relative' }}>
-                  <Typography variant="h5" gutterBottom>description</Typography>
+                  <Typography variant="h5" gutterBottom>Description</Typography>
                   <Stack direction="row" spacing={0.5} sx={{ position: 'absolute', top: 8, right: 8 }}>
                     <EventIcon fontSize="small" color="action" />
                     <Typography variant="body2" color="textSecondary">{new Date(deadline).toLocaleDateString('de-DE', { year: 'numeric', month: '2-digit', day: '2-digit' })}</Typography>
                   </Stack>
                 </Stack>
-                <Typography variant="body1" sx={{ overflow: 'auto', scrollbarWidth: 'none', maxHeight: '15vh' }}>{description}</Typography>
+                <Typography variant="body1" sx={{ wordWrap: 'break-word', scrollbarWidth: 'none' }}>{description}</Typography>
               </CardContent>
             </Card>
             <Card sx={{ borderRadius: '2rem' }}>
               <CardContent>
                 <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                  <Typography variant="h5" gutterBottom>focus mode</Typography>
+                  <Typography variant="h5" gutterBottom>Focus Mode</Typography>
                   <IconButton color="primary" onClick={handleInfoButtonClick}>
                     <InfoOutlinedIcon />
                   </IconButton>
@@ -183,8 +175,8 @@ const StartTask = () => {
                 </ToggleButtonGroup>
 
                 <Stack spacing={2} direction="row" sx={{ display: studyTechnique === 'pomodoro' ? 'flex' : 'none', mt: '1rem' }}>
-                  <TextField label="focus duration" defaultValue={25} onChange={(e) => setLearningInterval(e.target.value)} disabled={timerStarted} slotProps={{ input: { endAdornment: <InputAdornment position="end">min</InputAdornment> } }} />
-                  <TextField label="break duration" defaultValue={5} onChange={(e) => setBreakInterval(e.target.value)} disabled={timerStarted} slotProps={{ input: { endAdornment: <InputAdornment position="end">min</InputAdornment> } }} />
+                  <TextField label="Focus Duration" defaultValue={25} onChange={(e) => setLearningInterval(e.target.value)} disabled={timerStarted} slotProps={{ input: { endAdornment: <InputAdornment position="end">min</InputAdornment>, sx: { borderRadius: '2rem' } } }} />
+                  <TextField label="Break Duration" defaultValue={5} onChange={(e) => setBreakInterval(e.target.value)} disabled={timerStarted} slotProps={{ input: { endAdornment: <InputAdornment position="end">min</InputAdornment>, sx: { borderRadius: '2rem' } } }} />
                 </Stack>
               </CardContent>
             </Card>
