@@ -1,15 +1,12 @@
 import React from 'react'
 
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Stack, Typography, Divider, IconButton, Box } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import PropTypes from 'prop-types'
 
-const TopNavigationBar = ({ name }) => {
+const TopNavigationBar = ({ name, disabled }) => {
   const navigate = useNavigate()
-
-  const location = useLocation()
-  const isRoot = location.pathname === '/'
 
   return (
     <Box
@@ -30,7 +27,7 @@ const TopNavigationBar = ({ name }) => {
         }}
       >
         {
-          isRoot ? <Box marginLeft={5} /> :
+          disabled ? <Box marginLeft={5} /> :
           <IconButton
             onClick={() => navigate(-1)}
           >
@@ -67,7 +64,8 @@ const TopNavigationBar = ({ name }) => {
 }
 
 TopNavigationBar.propTypes = {
-  name: PropTypes.string.isRequired
+  name: PropTypes.string.isRequired,
+  disabled: PropTypes.bool
 }
 
 export default TopNavigationBar

@@ -10,10 +10,66 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import CloseIcon from '@mui/icons-material/Close'
 import EventIcon from '@mui/icons-material/Event'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
 
 import useTasks from '../../hooks/useTasks'
 import TopNavigationBar from '../TopNavigationBar'
 import Timer from './Timer/Timer'
+
+// Delete Button and Dialog
+const DeleteButton = () => {
+  const [open, setOpen] = React.useState(false)
+  const { removeTask } = useTasks()
+  const { id } = useParams()
+  return (
+    <>
+      <Button
+        variant="contained"
+        color="error"
+        fullWidth
+        onClick={() => { setOpen(true) }}
+        sx={{ mt: 2, borderRadius: '2rem' }}
+      >
+        DELETE TASK
+      </Button>
+      <Dialog
+        open={open}
+        onClose={() => (setOpen(false))}
+      >
+        <DialogContent>
+          <DialogTitle sx={{ marginLeft: -3 }}>
+            Delete Task?
+          </DialogTitle>
+          <DialogContentText>
+            Task will be deleted permanently.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => (setOpen(false))}
+            autoFocus
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              console.log('Manual delete for task:', id)
+              removeTask(id)
+              window.location.href = '/'
+            }}
+            color="error"
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
+  )
+}
 
 const StartTask = () => {
   const [timerStarted, setTimerStarted] = useState(false)
@@ -28,7 +84,7 @@ const StartTask = () => {
   const navigate = useNavigate()
 
   // Data fetching
-  const { getTask, removeTask, tasks: allTasks } = useTasks()
+  const { getTask, removeTask } = useTasks()
   const { id } = useParams()
   const task = getTask(id)
   const { title, deadline, importance, approximatedTime, description } = task
@@ -112,7 +168,7 @@ const StartTask = () => {
   return (
     <Box flex={1} sx={{ width: '100%', overflowY: 'hidden', bgcolor: 'primary.background' }}>
       <div ref={topRef} />
-      <TopNavigationBar name={title} />
+      <TopNavigationBar name={title} disabled={timerStarted} />
       <Stack spacing={2} sx={{ height: '200%', m: '1rem', justifyContent: 'space-between' }}>
         <Stack spacing={2} sx={{ height: '46%', justifyContent: 'space-between' }}>
           <Stack spacing={2} sx={{ flex: 1 }}>
@@ -182,6 +238,8 @@ const StartTask = () => {
             <Button sx={{ borderRadius: '2rem' }} variant="contained" fullWidth endIcon={<PlayArrowIcon />} onClick={startTimer} disabled={timerStarted}>
               <Typography variant="button">Start</Typography>
             </Button>
+            <DeleteButton />
+
           </Stack>
           {
             timerStarted && atPageTop &&
@@ -236,13 +294,11 @@ const StartTask = () => {
                 variant="outlined"
                 color="error"
                 onClick={() => {
-                  console.log('Manual delete for task:', id)
-                  removeTask(id)
-                  window.location.href = '/'
+                  navigate(-1)
                 }}
                 sx={{ mt: 2 }}
               >
-                DELETE TASK
+                QUIT TASK
               </Button>
             </Stack>
           )
