@@ -173,18 +173,15 @@ const StartTask = () => {
                     <Typography variant="button">flowmodoro</Typography>
                   </ToggleButton>
                 </ToggleButtonGroup>
-
                 <Stack spacing={2} direction="row" sx={{ display: studyTechnique === 'pomodoro' ? 'flex' : 'none', mt: '1rem' }}>
                   <TextField label="Focus Duration" defaultValue={25} onChange={(e) => setLearningInterval(e.target.value)} disabled={timerStarted} slotProps={{ input: { endAdornment: <InputAdornment position="end">min</InputAdornment>, sx: { borderRadius: '2rem' } } }} />
                   <TextField label="Break Duration" defaultValue={5} onChange={(e) => setBreakInterval(e.target.value)} disabled={timerStarted} slotProps={{ input: { endAdornment: <InputAdornment position="end">min</InputAdornment>, sx: { borderRadius: '2rem' } } }} />
                 </Stack>
               </CardContent>
             </Card>
-
             <Button sx={{ borderRadius: '2rem' }} variant="contained" fullWidth endIcon={<PlayArrowIcon />} onClick={startTimer} disabled={timerStarted}>
               <Typography variant="button">Start</Typography>
             </Button>
-
           </Stack>
           {
             timerStarted && atPageTop &&
@@ -235,7 +232,6 @@ const StartTask = () => {
               >
                 {(timerPaused ? 'Continue' : 'Pause')}
               </Button>}
-
               <Button
                 variant="outlined"
                 color="error"
@@ -249,9 +245,8 @@ const StartTask = () => {
                 DELETE TASK
               </Button>
             </Stack>
-
           )
-}
+          }
           <Box />
         </Stack>
       </Stack>
