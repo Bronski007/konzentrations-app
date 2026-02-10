@@ -13,6 +13,9 @@ import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
+import DeleteIcon from '@mui/icons-material/Delete'
+import ExitToAppIcon from '@mui/icons-material/ExitToApp'
+
 import useTasks from '../../hooks/useTasks'
 import TopNavigationBar from '../TopNavigationBar'
 import Timer from './Timer/Timer'
@@ -29,18 +32,20 @@ const DeleteButton = () => {
         color="error"
         fullWidth
         onClick={() => { setOpen(true) }}
+        endIcon={<DeleteIcon />}
         sx={{ mt: 2, borderRadius: '2rem' }}
       >
-        DELETE TASK
+        Delete
       </Button>
       <Dialog
         open={open}
         onClose={() => (setOpen(false))}
+        slotProps={{ paper: { sx: { borderRadius: '2rem', p: '0.5rem' } } }}
       >
+        <DialogTitle>
+          Delete Task?
+        </DialogTitle>
         <DialogContent>
-          <DialogTitle sx={{ marginLeft: -3 }}>
-            Delete Task?
-          </DialogTitle>
           <DialogContentText>
             Task will be deleted permanently.
           </DialogContentText>
@@ -49,6 +54,7 @@ const DeleteButton = () => {
           <Button
             onClick={() => (setOpen(false))}
             autoFocus
+            sx={{ borderRadius: '2rem' }}
           >
             Cancel
           </Button>
@@ -59,6 +65,7 @@ const DeleteButton = () => {
               window.location.href = '/'
             }}
             color="error"
+            sx={{ borderRadius: '2rem' }}
           >
             Delete
           </Button>
@@ -189,7 +196,7 @@ const StartTask = () => {
                 <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <Typography variant="h5" gutterBottom>Focus Mode</Typography>
                 </Stack>
-                <ToggleButtonGroup color={timerStarted ? 'standard' : 'primary'} value={studyTechnique} exclusive onChange={handleTechnique} disabled={timerStarted} size="small" sx={{ width: '100%', margin: 1 }}>
+                <ToggleButtonGroup color={timerStarted ? 'standard' : 'primary'} value={studyTechnique} exclusive onChange={handleTechnique} disabled={timerStarted} size="small" sx={{ width: '100%', mt: 1 }}>
                   <ToggleButton value="pomodoro" sx={{ width: '50%', borderRadius: '2rem' }}>
                     <Typography variant="button">pomodoro</Typography>
                   </ToggleButton>
@@ -274,24 +281,26 @@ const StartTask = () => {
           </Card>
           {
           timerStarted && (
-            <Stack>
+            <Stack spacing={2} sx={{ width: '100%' }}>
               {timerStarted &&
               <Button
                 variant="outlined"
                 endIcon={(timerPaused ? <PlayArrowIcon /> : <PauseIcon />)}
                 onClick={() => setTimerPaused(!timerPaused)}
+                sx={{ borderRadius: '2rem', flex: 1 }}
               >
                 {(timerPaused ? 'Continue' : 'Pause')}
               </Button>}
               <Button
                 variant="outlined"
+                endIcon={(<ExitToAppIcon />)}
                 color="error"
                 onClick={() => {
                   navigate(-1)
                 }}
-                sx={{ mt: 2 }}
+                sx={{ mt: 2, borderRadius: '2rem' }}
               >
-                QUIT TASK
+                Cancel
               </Button>
             </Stack>
           )

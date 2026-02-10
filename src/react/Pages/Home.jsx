@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 
 import { useNavigate } from 'react-router-dom'
-import { Stack, Fab } from '@mui/material'
+import { Box, Stack, Fab } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import useTasks from '../../hooks/useTasks'
 
@@ -20,35 +20,13 @@ const Home = () => {
   }, [tasks])
 
   return (
-    <Stack
-      flex="1"
-      direction="column"
-      sx={{
-        width: '100%'
-      }}
-    >
+    <Box flex={1} sx={{ width: '100%', overflowY: 'hidden', bgcolor: 'primary.background' }}>
       <TopNavigationBar name="Todo Planner" xButtonDisabled />
-      <Stack
-        flex="1 1 auto"
-        direction="column"
-        justifyContent="space-between"
-        alignItems="center"
-        sx={{
-          width: '100%',
-          bgcolor: 'primary.contrastText',
-          paddingBottom: 2,
-          position: 'relative'
-        }}
-      >
+      <Stack spacing={2} sx={{ m: '1rem', justifyContent: 'space-between' }}>
         <Stack
           direction="column"
           alignItems="center"
           spacing={2}
-          sx={{
-            width: '100%',
-            flex: '1 1 auto',
-            paddingBottom: 2
-          }}
         >
           {tasks.map((task) => (
             <NoteCard
@@ -58,22 +36,17 @@ const Home = () => {
             />
           ))}
         </Stack>
-
-        <Fab
-          color="primary"
-          onClick={() => navigate('/Task')}
-          sx={{
-            position: 'absolute',
-            bottom: 16,
-            right: 16
-          }}
-          aria-label="Add Task"
-        >
-          <AddIcon />
-        </Fab>
-
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
+          <Fab
+            color="primary"
+            onClick={() => navigate('/Task')}
+            aria-label="Add Task"
+          >
+            <AddIcon />
+          </Fab>
+        </Box>
       </Stack>
-    </Stack>
+    </Box>
   )
 }
 
