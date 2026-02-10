@@ -1,21 +1,18 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router'
-import { Box, Stack, Typography, Card, CardContent, Button, Rating, Fab, ToggleButton, ToggleButtonGroup, TextField, InputAdornment, Popover, IconButton } from '@mui/material'
+import { Box, Stack, Typography, Card, CardContent, Button, Rating, Fab, ToggleButton, ToggleButtonGroup, TextField, InputAdornment } from '@mui/material'
 import CircleIcon from '@mui/icons-material/Circle'
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import PauseIcon from '@mui/icons-material/Pause'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import CloseIcon from '@mui/icons-material/Close'
 import EventIcon from '@mui/icons-material/Event'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
-
 import useTasks from '../../hooks/useTasks'
 import TopNavigationBar from '../TopNavigationBar'
 import Timer from './Timer/Timer'
@@ -78,7 +75,6 @@ const StartTask = () => {
   const [studyTechnique, setStudyTechnique] = useState('pomodoro')
   const [learningInterval, setLearningInterval] = useState(25)
   const [breakInterval, setBreakInterval] = useState(5)
-  const [infoAnchorEl, setInfoAnchorEl] = useState(null)
   const timerRef = useRef(null)
   const topRef = useRef(null)
   const navigate = useNavigate()
@@ -90,7 +86,7 @@ const StartTask = () => {
   const { title, deadline, importance, approximatedTime, description } = task
   const typeMultiplyer = approximatedTime.type === 'h' ? 60 : 1
   const aproxTimeInMin = Number(approximatedTime.value) * typeMultiplyer
-
+  const totalSessions = Math.ceil((aproxTimeInMin) / learningInterval)
   const scroll = () => {
     if (atPageTop) {
       timerRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -116,18 +112,6 @@ const StartTask = () => {
       setStudyTechnique(newTechnique)
     }
   }
-
-  const handleInfoButtonClick = (event) => {
-    setInfoAnchorEl(event.currentTarget)
-  }
-
-  const handleInfoButtonClose = () => {
-    setInfoAnchorEl(null)
-  }
-
-  const infoOpen = Boolean(infoAnchorEl)
-  const infoId = infoOpen ? 'info' : undefined
-
   const handleTaskComplete = () => {
     console.log('Timer completed for task:', title)
     console.log('Task ID to remove:', id)
@@ -204,24 +188,8 @@ const StartTask = () => {
               <CardContent>
                 <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <Typography variant="h5" gutterBottom>Focus Mode</Typography>
-                  <IconButton color="primary" onClick={handleInfoButtonClick}>
-                    <InfoOutlinedIcon />
-                  </IconButton>
-                  <Popover id={infoId} open={infoOpen} anchorEl={infoAnchorEl} onClose={handleInfoButtonClose} anchorOrigin={{ vertical: 'top', horizontal: 'right' }} transformOrigin={{ vertical: 'top', horizontal: 'right' }} slotProps={{ paper: { sx: { borderRadius: '2rem', maxWidth: '273pt' } } }}>
-                    <Stack spacing={0.25} sx={{ p: 2 }}>
-                      <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                        <Typography variant="body1">Pomodoro:</Typography>
-                        <IconButton onClick={handleInfoButtonClose} size="small" sx={{ position: 'absolute', top: 8, right: 8 }}>
-                          <CloseIcon color="primary" />
-                        </IconButton>
-                      </Stack>
-                      <Typography variant="body2">Work in short focus intervals with regular breaks. Intervals and breaks are fully adjustable.</Typography>
-                      <Typography variant="body1">Flowmodoro:</Typography>
-                      <Typography variant="body2">Work in longer, flexible blocks to reach a deeper flow. Take breaks when it feels natural.</Typography>
-                    </Stack>
-                  </Popover>
                 </Stack>
-                <ToggleButtonGroup color={timerStarted ? 'standard' : 'primary'} value={studyTechnique} exclusive onChange={handleTechnique} disabled={timerStarted} size="small" sx={{ width: '100%' }}>
+                <ToggleButtonGroup color={timerStarted ? 'standard' : 'primary'} value={studyTechnique} exclusive onChange={handleTechnique} disabled={timerStarted} size="small" sx={{ width: '100%', margin: 1 }}>
                   <ToggleButton value="pomodoro" sx={{ width: '50%', borderRadius: '2rem' }}>
                     <Typography variant="button">pomodoro</Typography>
                   </ToggleButton>
@@ -229,10 +197,35 @@ const StartTask = () => {
                     <Typography variant="button">flowmodoro</Typography>
                   </ToggleButton>
                 </ToggleButtonGroup>
-                <Stack spacing={2} direction="row" sx={{ display: studyTechnique === 'pomodoro' ? 'flex' : 'none', mt: '1rem' }}>
-                  <TextField label="Focus Duration" defaultValue={25} onChange={(e) => setLearningInterval(e.target.value)} disabled={timerStarted} slotProps={{ input: { endAdornment: <InputAdornment position="end">min</InputAdornment>, sx: { borderRadius: '2rem' } } }} />
-                  <TextField label="Break Duration" defaultValue={5} onChange={(e) => setBreakInterval(e.target.value)} disabled={timerStarted} slotProps={{ input: { endAdornment: <InputAdornment position="end">min</InputAdornment>, sx: { borderRadius: '2rem' } } }} />
-                </Stack>
+                { studyTechnique === 'pomodoro' &&
+                  <Stack sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Typography
+                      variant="subtitle2"
+                      color="textSecondary"
+                      sx={{ margin: 1 }}
+                    >
+                      Work in short focus intervals with regular breaks. Intervals and breaks are fully adjustable.
+                    </Typography>
+                    <Stack spacing={2} direction="row" sx={{ display: 'flex', mt: '1rem' }}>
+                      <TextField label="Focus Duration" defaultValue={25} onChange={(e) => setLearningInterval(e.target.value)} disabled={timerStarted} slotProps={{ input: { endAdornment: <InputAdornment position="end">min</InputAdornment>, sx: { borderRadius: '2rem' } } }} />
+                      <TextField label="Break Duration" defaultValue={5} onChange={(e) => setBreakInterval(e.target.value)} disabled={timerStarted} slotProps={{ input: { endAdornment: <InputAdornment position="end">min</InputAdornment>, sx: { borderRadius: '2rem' } } }} />
+                    </Stack>
+                    <Typography variant="subtitle1" sx={{ marginTop: 3 }}>
+                      <strong>{Number.isFinite(totalSessions) ? totalSessions : '0'}</strong>
+                      {' '}
+                      study session
+                      {totalSessions > 1 ? 's' : '' }
+                    </Typography>
+                  </Stack>}
+                { studyTechnique === 'flowmodoro' &&
+                  <Typography
+                    variant="subtitle2"
+                    color="textSecondary"
+                    sx={{ margin: 1 }}
+                  >
+                    Work in longer, flexible blocks to reach a deeper flow. Take breaks when it feels natural.
+                  </Typography>}
+
               </CardContent>
             </Card>
             <Button sx={{ borderRadius: '2rem' }} variant="contained" fullWidth endIcon={<PlayArrowIcon />} onClick={startTimer} disabled={timerStarted}>
