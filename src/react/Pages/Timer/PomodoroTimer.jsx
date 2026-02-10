@@ -5,8 +5,8 @@ import PropTypes from 'prop-types'
 
 import displayTime from '../../../hooks/displayTime'
 
-const PomodoroTimer = ({ studyDuration, learningIntervalTime, breakIntervalTime, onTaskComplete }) => {
-  const [sessionTime, setSessionTime] = useState(learningIntervalTime)
+const PomodoroTimer = ({ studyDuration, learningIntervalTime, breakIntervalTime, isPaused, onTaskComplete }) => {
+  const [sessionTime, setSessionTime] = useState(Math.min(learningIntervalTime, studyDuration))
   const [totalStudyTimeRemaining, setTotalStudyTimeRemaining] = useState(studyDuration)
   const [isBreak, setIsBreak] = useState(false)
   const [sessionsCompleted, setSessionsCompleted] = useState(0)
@@ -28,7 +28,7 @@ const PomodoroTimer = ({ studyDuration, learningIntervalTime, breakIntervalTime,
   // Main timer logic (FIXED)
 
   useEffect(() => {
-    if (!isRunning || totalStudyTimeRemaining <= 0) return
+    if (!isRunning || isPaused || totalStudyTimeRemaining <= 0) return
 
     const interval = setInterval(() => {
       if (sessionTime > 0) {
@@ -63,7 +63,7 @@ const PomodoroTimer = ({ studyDuration, learningIntervalTime, breakIntervalTime,
     }, 1000)
     return () => clearInterval(interval)
   }, [sessionTime, isBreak, isRunning, learningIntervalTime, breakIntervalTime,
-    totalStudyTimeRemaining, sessionsCompleted, totalSessions])
+    totalStudyTimeRemaining, sessionsCompleted, totalSessions, isPaused])
 
   return (
     <Stack spacing={2} alignItems="center">
@@ -102,6 +102,7 @@ PomodoroTimer.propTypes = {
   studyDuration: PropTypes.number,
   learningIntervalTime: PropTypes.number,
   breakIntervalTime: PropTypes.number,
+  isPaused: PropTypes.bool,
   onTaskComplete: PropTypes.func
 }
 

@@ -21,7 +21,7 @@ const Home = () => {
         width: '100%'
       }}
     >
-      <TopNavigationBar name="Todo Planner" />
+      <TopNavigationBar name="Todo Planner" xButtonDisabled />
       <Stack
         flex="1 1 auto"
         direction="column"
