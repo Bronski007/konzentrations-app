@@ -5,7 +5,7 @@ const taskTimeInMinutes = (value, type) => {
   return minutesForTask
 }
 
-// calculates the difference between a deadline and today in minutes
+// Calculates the difference in minutes between the deadline and the current time
 const differenceDateInMin = (deadline) => {
   const diff = new Date(deadline).getTime() - new Date().getTime()
   const minutes = Math.ceil(diff / (1000 * 60))
@@ -13,15 +13,14 @@ const differenceDateInMin = (deadline) => {
   return minutes
 }
 
-// calculates the minutes of a day needed to complete a task until the deadline
-// Todo: Sonderfall falls Deadline heute ist und est. Time länger ist
+// Computes the required daily minutes to complete the task by the deadline
 const getLearningTimePerDay = (minutesForTask, minutesTillDeadline) => {
   const daysUntilDeadline = minutesTillDeadline / 1440
 
   return minutesForTask / daysUntilDeadline
 }
 
-// takes the time for a task and returns a wheight in order to reccommend very short tasks
+// Calculates a weight based on task duration, giving higher weight to shorter tasks
 const weightShorterTask = (minutesForTask) => {
   if (minutesForTask <= 10) return 10
   if (minutesForTask <= 20) return 7
@@ -32,7 +31,7 @@ const weightShorterTask = (minutesForTask) => {
 
 const weightImportance = (importance) => (1 + importance * 0.2)
 
-// Wie nah ist die Deadline
+// Calculates a weight based the deadline
 const weightDeadline = (minutesTillDeadline) => {
   const hoursTillDeadline = minutesTillDeadline / 60
   if (hoursTillDeadline <= 24) return 10
@@ -43,7 +42,7 @@ const weightDeadline = (minutesTillDeadline) => {
   return 1
 }
 
-const sortTasks = ({ approximatedTime: { value, type }, importance, deadline }) => {
+const calculateTaskScore = ({ approximatedTime: { value, type }, importance, deadline }) => {
   const minutesForTask = taskTimeInMinutes(value, type)
   const minutesTillDeadline = differenceDateInMin(deadline)
 
@@ -57,4 +56,4 @@ const sortTasks = ({ approximatedTime: { value, type }, importance, deadline }) 
   return score
 }
 
-export default sortTasks
+export default calculateTaskScore
