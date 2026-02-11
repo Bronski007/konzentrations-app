@@ -284,7 +284,7 @@ const StartTask = () => {
             <Stack spacing={2} sx={{ width: '100%' }}>
               {timerStarted &&
               <Button
-                variant="outlined"
+                variant="contained"
                 endIcon={(timerPaused ? <PlayArrowIcon /> : <PauseIcon />)}
                 onClick={() => setTimerPaused(!timerPaused)}
                 sx={{ borderRadius: '2rem', flex: 1 }}
@@ -292,7 +292,7 @@ const StartTask = () => {
                 {(timerPaused ? 'Continue' : 'Pause')}
               </Button>}
               <Button
-                variant="outlined"
+                variant="contained"
                 endIcon={(<ExitToAppIcon />)}
                 color="error"
                 onClick={() => {
