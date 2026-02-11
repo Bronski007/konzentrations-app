@@ -45,17 +45,18 @@ const Home = () => {
             paddingBottom: 2
           }}
         >
-          {tasks.map((task) => {
-            const result = sortTasks(task)
-            console.log(result)
-            return (
+          {tasks.map(task => (
+            console.log(`${task.title}: ${sortTasks(task)}`)
+          ))}
+          {structuredClone(tasks)
+            .sort((a, b) => sortTasks(b) - sortTasks(a))
+            .map(task => (
               <NoteCard
                 key={task.id}
                 task={task}
                 onClick={() => navigate(`/StartTask/${task.id}`)}
               />
-            )
-          })}
+            ))}
         </Stack>
 
         <Fab
