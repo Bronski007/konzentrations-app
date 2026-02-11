@@ -51,7 +51,7 @@ const Home = () => {
                 key={task.id}
                 task={task}
                 onClick={() => navigate(`/StartTask/${task.id}`)}
-                sx={{ width: '100%', maxWidth: 700 }}
+                sx={{ width: '100%', maxWidth: 500 }}
               />
             ))}
           </Stack>
