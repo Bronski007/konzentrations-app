@@ -27,7 +27,7 @@ const TopNavigationBar = ({ name, xButtonDisabled }) => {
         }}
       >
         {
-          xButtonDisabled ? <Box marginLeft={5} /> :
+          xButtonDisabled ? <Box marginLeft={2} /> :
           <IconButton
             onClick={() => navigate(-1)}
           >

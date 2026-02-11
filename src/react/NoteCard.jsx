@@ -1,57 +1,53 @@
 import React from 'react'
+import { Stack, Typography, Card, CardContent } from '@mui/material'
+import EventIcon from '@mui/icons-material/Event'
+import HourglassTopIcon from '@mui/icons-material/HourglassTop'
 
-import { Stack, Typography } from '@mui/material'
 import PropTypes from 'prop-types'
 
 const NoteCard = ({ task: { title, approximatedTime: { value, type }, deadline, description }, onClick }) => (
-  <Stack
-    direction="column"
-    overflow="hidden"
-    spacing={1}
-    onClick={onClick}
-    sx={{
-      width: '95%',
-      borderRadius: '1rem',
-      padding: 1.5,
-      bgcolor: 'primary.light',
-      color: '#0f172a'
-    }}
-  >
-    <Stack
-      direction="row"
-      justifyContent="space-between"
-      alignItems="center"
-    >
+  <Card sx={{ borderRadius: '2rem', flex: 1, width: '100%', cursor: 'pointer' }}>
+    <CardContent>
       <Stack
-        direction="row"
-        alignItems="baseline"
-        spacing={0.6}
+        direction="column"
+        overflow="hidden"
+        spacing={1}
+        onClick={onClick}
       >
-        <Typography variant="h6" fontWeight="700">
-          {title}
-        </Typography>
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Typography variant="h5" gutterBottom>
+            {title}
+          </Typography>
 
-        <Typography variant="body1">
-          {`${value}${type}`}
+          <Stack direction="row" spacing={1}>
+            <Stack direction="row" spacing={0.5} sx={{ position: 'relative', top: '-0.25rem' }}>
+              <HourglassTopIcon fontSize="small" color="action" />
+              <Typography variant="body2" color="textSecondary">{`${value}${type}`}</Typography>
+            </Stack>
+
+            <Stack direction="row" spacing={0.5} sx={{ position: 'relative', top: '-0.25rem' }}>
+              <EventIcon fontSize="small" color="action" />
+              <Typography variant="body2" color="textSecondary">{new Date(deadline).toLocaleDateString('de-DE', { year: 'numeric', month: '2-digit', day: '2-digit' })}</Typography>
+            </Stack>
+          </Stack>
+
+        </Stack>
+        <Typography
+          variant="body1"
+          sx={{
+            wordWrap: 'break-word',
+            scrollbarWidth: 'none'
+          }}
+        >
+          {description}
         </Typography>
       </Stack>
-
-      <Typography variant="body1">
-        {new Date(deadline).toLocaleDateString('de-DE')}
-      </Typography>
-
-    </Stack>
-    <Typography
-      variant="body2"
-      sx={{
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap'
-      }}
-    >
-      {description}
-    </Typography>
-  </Stack>
+    </CardContent>
+  </Card>
 )
 
 NoteCard.propTypes = {
