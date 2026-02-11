@@ -60,7 +60,6 @@ const DeleteButton = () => {
           </Button>
           <Button
             onClick={() => {
-              console.log('Manual delete for task:', id)
               removeTask(id)
               window.location.href = '/'
             }}
@@ -125,20 +124,16 @@ const StartTask = () => {
 
     navigate('/', { replace: true })
 
-    try {
-      const currentTasks = JSON.parse(localStorage.getItem('tasks_data') || '[]')
-      const newTasks = currentTasks.filter(t => t.id !== id)
-      localStorage.setItem('tasks_data', JSON.stringify(newTasks))
+    const currentTasks = JSON.parse(localStorage.getItem('tasks_data') || '[]')
+    const newTasks = currentTasks.filter(t => t.id !== id)
+    localStorage.setItem('tasks_data', JSON.stringify(newTasks))
 
-      removeTask(id)
+    removeTask(id)
 
-      window.dispatchEvent(new StorageEvent('storage', {
-        key: 'tasks_data',
-        newValue: localStorage.getItem('tasks_data')
-      }))
-    } catch (error) {
-      console.error('Error removing task:', error)
-    }
+    window.dispatchEvent(new StorageEvent('storage', {
+      key: 'tasks_data',
+      newValue: localStorage.getItem('tasks_data')
+    }))
   }
 
   return (
