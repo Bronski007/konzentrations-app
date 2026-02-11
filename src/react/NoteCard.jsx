@@ -11,7 +11,7 @@ const NoteCard = ({ task: { title, approximatedTime: { value, type }, deadline, 
     flex: 1,
     width: '96%',
     cursor: 'pointer',
-    backgroundColor: '#c5e2fc'
+    backgroundColor: '#b9c3ff'
   }}
   >
     <CardContent>
