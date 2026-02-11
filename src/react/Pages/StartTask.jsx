@@ -129,30 +129,25 @@ const StartTask = () => {
   const infoId = infoOpen ? 'info' : undefined
 
   const handleTaskComplete = () => {
-    try {
-      const currentTasks = JSON.parse(localStorage.getItem('tasks_data') || '[]')
-      const newTasks = currentTasks.filter(t => t.id !== id)
-
-      // localStorage update
-      localStorage.setItem('tasks_data', JSON.stringify(newTasks))
-
-      // react state update
-      removeTask(id)
-    } catch (error) {
-      console.error('Error removing task:', error)
-    }
-
     // eslint-disable-next-line no-alert
     alert(`Task "${title}" completed! It will be removed from your list.`)
 
-    setTimeout(() => {
-      navigate('/', { replace: true })
+    navigate('/', { replace: true })
+
+    try {
+      const currentTasks = JSON.parse(localStorage.getItem('tasks_data') || '[]')
+      const newTasks = currentTasks.filter(t => t.id !== id)
+      localStorage.setItem('tasks_data', JSON.stringify(newTasks))
+
+      removeTask(id)
 
       window.dispatchEvent(new StorageEvent('storage', {
         key: 'tasks_data',
         newValue: localStorage.getItem('tasks_data')
       }))
-    }, 1000)
+    } catch (error) {
+      console.error('Error removing task:', error)
+    }
   }
 
   return (
