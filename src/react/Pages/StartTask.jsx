@@ -120,40 +120,25 @@ const StartTask = () => {
     }
   }
   const handleTaskComplete = () => {
-    console.log('Timer completed for task:', title)
-    console.log('Task ID to remove:', id)
-
-    try {
-      const currentTasks = JSON.parse(localStorage.getItem('tasks_data') || '[]')
-      console.log('Tasks in localStorage before:', currentTasks.length)
-
-      const newTasks = currentTasks.filter(t => t.id !== id)
-      console.log('Tasks in localStorage after:', newTasks.length)
-
-      // localStorage update
-      localStorage.setItem('tasks_data', JSON.stringify(newTasks))
-
-      // react state update
-      removeTask(id)
-
-      console.log('Task removed successfully from localStorage')
-    } catch (error) {
-      console.error('Error removing task:', error)
-    }
-
     // eslint-disable-next-line no-alert
     alert(`Task "${title}" completed! It will be removed from your list.`)
 
-    setTimeout(() => {
-      console.log('Navigating to home page...')
+    navigate('/', { replace: true })
 
-      navigate('/', { replace: true })
+    try {
+      const currentTasks = JSON.parse(localStorage.getItem('tasks_data') || '[]')
+      const newTasks = currentTasks.filter(t => t.id !== id)
+      localStorage.setItem('tasks_data', JSON.stringify(newTasks))
+
+      removeTask(id)
 
       window.dispatchEvent(new StorageEvent('storage', {
         key: 'tasks_data',
         newValue: localStorage.getItem('tasks_data')
       }))
-    }, 1000)
+    } catch (error) {
+      console.error('Error removing task:', error)
+    }
   }
 
   return (

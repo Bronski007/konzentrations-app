@@ -46,7 +46,6 @@ export default function useTasks() {
   // Subscribe to task changes from ANY component
   useEffect(() => {
     const unsubscribe = taskStore.subscribe((newTasks) => {
-      console.log('Task store updated, syncing state:', newTasks)
       setTasks(newTasks)
     })
 
@@ -67,7 +66,6 @@ export default function useTasks() {
   }, [])
 
   const addTask = useCallback((task) => {
-    console.log('Adding task:', task.id)
     const currentTasks = taskStore.loadTasks()
     const newTasks = [task, ...currentTasks]
     taskStore.saveTasks(newTasks)
@@ -79,13 +77,8 @@ export default function useTasks() {
   }, [])
 
   const removeTask = useCallback((id) => {
-    console.log('REMOVING task ID:', id)
     const currentTasks = taskStore.loadTasks()
-    console.log('Before removal:', currentTasks)
-
     const newTasks = currentTasks.filter(task => task.id !== id)
-    console.log('After removal:', newTasks)
-
     taskStore.saveTasks(newTasks)
 
     // update local state immediately

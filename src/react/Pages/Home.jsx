@@ -1,51 +1,76 @@
-import React, { useEffect } from 'react'
-
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Box, Stack, Fab } from '@mui/material'
+import { Stack, Fab, Box } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import useTasks from '../../hooks/useTasks'
-
 import TopNavigationBar from '../TopNavigationBar'
-
 import NoteCard from '../NoteCard'
 
 const Home = () => {
   const navigate = useNavigate()
   const { tasks } = useTasks()
 
-  // Logging when tasks change
-  useEffect(() => {
-    console.log('Home component rendered with tasks:', tasks)
-    console.log('Task IDs:', tasks.map(t => t.id))
-  }, [tasks])
-
   return (
-    <Box flex={1} sx={{ width: '100%', overflowY: 'hidden', bgcolor: 'primary.background' }}>
+    <Box
+      sx={{
+        width: '100%',
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden'
+      }}
+    >
       <TopNavigationBar name="Todo Planner" xButtonDisabled />
-      <Stack spacing={2} sx={{ m: '1rem', justifyContent: 'space-between' }}>
-        <Stack
-          direction="column"
-          alignItems="center"
-          spacing={2}
+
+      <Box
+        sx={{
+          flex: 1,
+          position: 'relative',
+          bgcolor: 'primary.contrastText',
+          overflow: 'hidden'
+        }}
+      >
+        {/* Main scrollable content area */}
+        <Box
+          sx={{
+            width: '100%',
+            height: '100%',
+            overflowY: 'auto',
+            padding: 0.7,
+            paddingBottom: 8 // Extra space for FAB
+          }}
         >
-          {tasks.map((task) => (
-            <NoteCard
-              key={task.id}
-              task={task}
-              onClick={() => navigate(`/StartTask/${task.id}`)}
-            />
-          ))}
-        </Stack>
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
-          <Fab
-            color="primary"
-            onClick={() => navigate('/Task')}
-            aria-label="Add Task"
+          <Stack
+            direction="column"
+            alignItems="center"
+            spacing={2}
+            sx={{ width: '100%' }}
           >
-            <AddIcon />
-          </Fab>
+            {tasks.map((task) => (
+              <NoteCard
+                key={task.id}
+                task={task}
+                onClick={() => navigate(`/StartTask/${task.id}`)}
+                sx={{ width: '100%', maxWidth: 700 }}
+              />
+            ))}
+          </Stack>
         </Box>
-      </Stack>
+
+        <Fab
+          color="primary"
+          onClick={() => navigate('/Task')}
+          sx={{
+            position: 'absolute',
+            bottom: 16,
+            right: 16,
+            zIndex: 1000
+          }}
+          aria-label="Add Task"
+        >
+          <AddIcon />
+        </Fab>
+      </Box>
     </Box>
   )
 }
