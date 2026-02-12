@@ -31,7 +31,7 @@ const PomodoroTimer = ({ studyDuration, learningIntervalTime, breakIntervalTime,
     if (!isRunning || isPaused || totalStudyTimeRemaining <= 0) return
 
     const interval = setInterval(() => {
-      if (sessionTime > 0) {
+      if (sessionTime > 1) {
         setSessionTime(prev => prev - 1)
 
         // ONLY decrement study time during focus sessions, not breaks
@@ -48,6 +48,7 @@ const PomodoroTimer = ({ studyDuration, learningIntervalTime, breakIntervalTime,
           // Focus session finished
           const newSessions = sessionsCompleted + 1
           setSessionsCompleted(newSessions)
+          setTotalStudyTimeRemaining(prev => Math.max(0, prev - 1))
 
           // Check if we've completed all study time
           if (newSessions >= totalSessions) {

@@ -5,14 +5,14 @@ import { Button, Stack } from '@mui/material'
 
 import displayTime from '../../../hooks/displayTime'
 
-const FlowTimer = ({ studyDuration, isPaused, onTaskComplete }) => {
+const FlowTimer = ({ studyDuration, breakRatio, isPaused, onTaskComplete }) => {
   const [time, setTime] = useState(0)
   const [timePassed, setTimePassed] = useState(0)
   const [isBreak, setBreak] = useState(false)
 
   const switchToBreak = () => {
     setBreak(true)
-    setTime(Math.floor(time / 5))
+    setTime(Math.floor(time / breakRatio))
   }
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const FlowTimer = ({ studyDuration, isPaused, onTaskComplete }) => {
             setTime(time + 1)
           }
         }
-        setTimePassed(timePassed + 1)
+        if (!isBreak) { setTimePassed(timePassed + 1) }
       }, 1000)
 
       return () => {
@@ -64,7 +64,7 @@ const FlowTimer = ({ studyDuration, isPaused, onTaskComplete }) => {
         {' / '}
         {displayTime(studyDuration)}
         {' '}
-        total passed
+        total studied
       </Typography>
 
       <Button fullWidth sx={{ borderRadius: '2rem' }} variant="contained" onClick={() => { switchToBreak() }} disabled={time < 60 || isBreak || studyDuration === timePassed}>
@@ -79,6 +79,7 @@ const FlowTimer = ({ studyDuration, isPaused, onTaskComplete }) => {
 FlowTimer.propTypes = {
   studyDuration: PropTypes.number,
   isPaused: PropTypes.bool,
+  breakRatio: PropTypes.number,
   onTaskComplete: PropTypes.func
 }
 
