@@ -26,7 +26,7 @@ const Home = () => {
         sx={{
           flex: 1,
           position: 'relative',
-          bgcolor: 'primary.contrastText',
+          bgcolor: 'primary.background',
           overflow: 'hidden'
         }}
       >
