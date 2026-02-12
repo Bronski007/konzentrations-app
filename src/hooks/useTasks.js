@@ -1,33 +1,88 @@
 import { useEffect, useState, useCallback } from 'react'
 
-// All task objects are stored in an array. This key accesses that array.
 const STORAGE_KEY = 'tasks_data'
 
-const readTasks = () => {
-  try {
-    const items = localStorage.getItem(STORAGE_KEY)
-    return items ? JSON.parse(items) : []
-  } catch (error) {
-    return []
+// Create a global event system for task updates
+const createTaskStore = () => {
+  let tasks = []
+  let listeners = []
+
+  // Read from localStorage
+  const loadTasks = () => {
+    try {
+      const items = localStorage.getItem(STORAGE_KEY)
+      tasks = items ? JSON.parse(items) : []
+    } catch (error) {
+      tasks = []
+    }
+    return tasks
   }
+
+  // Save to localStorage
+  const saveTasks = (newTasks) => {
+    tasks = newTasks
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(newTasks))
+    // Notify all listeners
+    listeners.forEach(listener => listener(newTasks))
+  }
+
+  // Subscribe to changes
+  const subscribe = (listener) => {
+    listeners.push(listener)
+    return () => {
+      listeners = listeners.filter(l => l !== listener)
+    }
+  }
+
+  return { loadTasks, saveTasks, subscribe }
 }
 
+// Single global instance
+const taskStore = createTaskStore()
+
 export default function useTasks() {
-  const [tasks, setTasks] = useState(() => readTasks())
+  const [tasks, setTasks] = useState(() => taskStore.loadTasks())
 
-  // Persist tasks to localStorage whenever the task state changes
+  // Subscribe to task changes from ANY component
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks))
-  }, [tasks])
+    const unsubscribe = taskStore.subscribe((newTasks) => {
+      setTasks(newTasks)
+    })
 
-  // Add a new task to the beginning of the task list
-  const addTask = (task) => setTasks((prev) => [{ ...task }, ...prev])
+    // Listen for storage events from other tabs
+    const handleStorageChange = (e) => {
+      if (e.key === STORAGE_KEY) {
+        const newTasks = taskStore.loadTasks()
+        setTasks(newTasks)
+      }
+    }
 
-  // Retrieve a single task by its id
-  const getTask = (id) => tasks.find(task => task.id === id)
+    window.addEventListener('storage', handleStorageChange)
+
+    return () => {
+      unsubscribe()
+      window.removeEventListener('storage', handleStorageChange)
+    }
+  }, [])
+
+  const addTask = useCallback((task) => {
+    const currentTasks = taskStore.loadTasks()
+    const newTasks = [task, ...currentTasks]
+    taskStore.saveTasks(newTasks)
+  }, [])
+
+  const getTask = useCallback((id) => {
+    const currentTasks = taskStore.loadTasks()
+    return currentTasks.find(task => task.id === id)
+  }, [])
 
   const removeTask = useCallback((id) => {
-    setTasks((prev) => prev.filter((t) => t.id !== id))
+    const currentTasks = taskStore.loadTasks()
+    const newTasks = currentTasks.filter(task => task.id !== id)
+    taskStore.saveTasks(newTasks)
+
+    // update local state immediately
+    setTasks(newTasks)
   }, [])
 
   return { tasks, getTask, addTask, removeTask }

@@ -14,7 +14,7 @@ import TopNavigationBar from '../TopNavigationBar'
 const initialItems = {
   title: '',
   description: '',
-  approximatedTime: { value: 0, type: 'min' },
+  approximatedTime: { value: '', type: 'min' },
   importance: 1
 }
 
