@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { Stack, Fab } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import useTasks from '../../hooks/useTasks'
+import calculateTaskScore from '../../taskSortingAlgorithm'
 
 import TopNavigationBar from '../TopNavigationBar'
 
@@ -37,20 +38,23 @@ const Home = () => {
         <Stack
           direction="column"
           alignItems="center"
-          spacing={1.5}
+          spacing={2}
           sx={{
             width: '100%',
             flex: '1 1 auto',
             paddingBottom: 2
           }}
         >
-          {tasks.map((task) => (
-            <NoteCard
-              key={task.id}
-              task={task}
-              onClick={() => navigate(`/StartTask/${task.id}`)}
-            />
-          ))}
+          {/* Orders tasks according to their calculated score */}
+          {structuredClone(tasks)
+            .sort((a, b) => calculateTaskScore(b) - calculateTaskScore(a))
+            .map(task => (
+              <NoteCard
+                key={task.id}
+                task={task}
+                onClick={() => navigate(`/StartTask/${task.id}`)}
+              />
+            ))}
         </Stack>
 
         <Fab
@@ -61,7 +65,7 @@ const Home = () => {
             bottom: 16,
             right: 16
           }}
-          aria-label="add task"
+          aria-label="Add Task"
         >
           <AddIcon />
         </Fab>
