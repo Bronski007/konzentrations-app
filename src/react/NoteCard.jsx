@@ -6,7 +6,14 @@ import HourglassTopIcon from '@mui/icons-material/HourglassTop'
 import PropTypes from 'prop-types'
 
 const NoteCard = ({ task: { title, approximatedTime: { value, type }, deadline, description }, onClick }) => (
-  <Card sx={{ borderRadius: '2rem', flex: 1, width: '100%', cursor: 'pointer' }}>
+  <Card sx={{
+    borderRadius: '2rem',
+    flex: 1,
+    width: '96%',
+    cursor: 'pointer',
+    backgroundColor: '#b9c3ff'
+  }}
+  >
     <CardContent>
       <Stack
         direction="column"
@@ -31,7 +38,11 @@ const NoteCard = ({ task: { title, approximatedTime: { value, type }, deadline, 
 
             <Stack direction="row" spacing={0.5} sx={{ position: 'relative', top: '-0.25rem' }}>
               <EventIcon fontSize="small" color="action" />
-              <Typography variant="body2" color="textSecondary">{new Date(deadline).toLocaleDateString('de-DE', { year: 'numeric', month: '2-digit', day: '2-digit' })}</Typography>
+              <Typography variant="body2" color="textSecondary">
+                {
+                new Date(deadline).toLocaleDateString('de-DE', { year: 'numeric', month: '2-digit', day: '2-digit' })
+                }
+              </Typography>
             </Stack>
           </Stack>
 

@@ -12,6 +12,7 @@ const TopNavigationBar = ({ name, xButtonDisabled }) => {
     <Box
       sx={{
         position: 'sticky',
+        bgcolor: 'primary.background',
         top: 0,
         zIndex: 10000
       }}
