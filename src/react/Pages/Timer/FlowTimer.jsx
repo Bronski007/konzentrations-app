@@ -5,15 +5,21 @@ import { Button, Stack } from '@mui/material'
 
 import displayTime from '../../../hooks/displayTime'
 
-const FlowTimer = ({ studyDuration }) => {
+const FlowTimer = ({ studyDuration, breakRatio, isPaused, onTaskComplete }) => {
   const [time, setTime] = useState(0)
   const [timePassed, setTimePassed] = useState(0)
   const [isBreak, setBreak] = useState(false)
 
   const switchToBreak = () => {
     setBreak(true)
-    setTime(Math.floor(time / 5))
+    setTime(Math.floor(time / breakRatio))
   }
+
+  useEffect(() => {
+    if (timePassed === studyDuration && onTaskComplete) {
+      onTaskComplete()
+    }
+  }, [timePassed, studyDuration, onTaskComplete])
 
   useEffect(() => {
     if (studyDuration > timePassed) {
@@ -22,6 +28,7 @@ const FlowTimer = ({ studyDuration }) => {
       }
 
       const interval = setInterval(() => {
+        if (isPaused) return
         if (studyDuration > timePassed) {
           setTime(isBreak ? time - 1 : time + 1)
           if (isBreak) {
@@ -30,14 +37,14 @@ const FlowTimer = ({ studyDuration }) => {
             setTime(time + 1)
           }
         }
-        setTimePassed(timePassed + 1)
-      }, 100)
+        if (!isBreak) { setTimePassed(timePassed + 1) }
+      }, 1000)
 
       return () => {
         clearInterval(interval)
       }
     }
-  })
+  }, [time, timePassed, isBreak, studyDuration, isPaused]) // Added dependencies
 
   return (
     <Stack spacing={2} alignItems="center">
@@ -57,10 +64,10 @@ const FlowTimer = ({ studyDuration }) => {
         {' / '}
         {displayTime(studyDuration)}
         {' '}
-        total passed
+        total studied
       </Typography>
 
-      <Button fullWidth sx={{ borderRadius: '2rem' }} variant="contained" onClick={() => { switchToBreak() }} disabled={isBreak || studyDuration === timePassed}>
+      <Button fullWidth sx={{ borderRadius: '2rem' }} variant="contained" onClick={() => { switchToBreak() }} disabled={time < 60 || isBreak || studyDuration === timePassed}>
         break
       </Button>
 
@@ -70,7 +77,10 @@ const FlowTimer = ({ studyDuration }) => {
 }
 
 FlowTimer.propTypes = {
-  studyDuration: PropTypes.number
+  studyDuration: PropTypes.number,
+  isPaused: PropTypes.bool,
+  breakRatio: PropTypes.number,
+  onTaskComplete: PropTypes.func
 }
 
 export default FlowTimer

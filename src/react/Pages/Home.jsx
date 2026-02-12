@@ -1,13 +1,11 @@
 import React from 'react'
-
 import { useNavigate } from 'react-router-dom'
-import { Stack, Fab } from '@mui/material'
+import { Stack, Fab, Box } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import useTasks from '../../hooks/useTasks'
 import calculateTaskScore from '../../taskSortingAlgorithm'
 
 import TopNavigationBar from '../TopNavigationBar'
-
 import NoteCard from '../NoteCard'
 
 const Home = () => {
@@ -15,47 +13,54 @@ const Home = () => {
   const { tasks } = useTasks()
 
   return (
-    <Stack
-      flex="1"
-      direction="column"
+    <Box
       sx={{
-        width: '100%'
+        width: '100%',
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden'
       }}
     >
-      <TopNavigationBar name="Todo Planner" />
-      <Stack
-        flex="1 1 auto"
-        direction="column"
-        justifyContent="space-between"
-        alignItems="center"
+      <TopNavigationBar name="Todo Planner" xButtonDisabled />
+
+      <Box
         sx={{
-          width: '100%',
-          bgcolor: 'primary.contrastText',
-          paddingBottom: 2,
-          position: 'relative'
+          flex: 1,
+          position: 'relative',
+          bgcolor: 'primary.background',
+          overflow: 'hidden'
         }}
       >
-        <Stack
-          direction="column"
-          alignItems="center"
-          spacing={2}
+        {/* Main scrollable content area */}
+        <Box
           sx={{
             width: '100%',
-            flex: '1 1 auto',
-            paddingBottom: 2
+            height: '100%',
+            overflowY: 'auto',
+            padding: 0.7,
+            paddingBottom: 8 // Extra space for FAB
           }}
         >
-          {/* Orders tasks according to their calculated score */}
-          {structuredClone(tasks)
-            .sort((a, b) => calculateTaskScore(b) - calculateTaskScore(a))
-            .map(task => (
-              <NoteCard
-                key={task.id}
-                task={task}
-                onClick={() => navigate(`/StartTask/${task.id}`)}
-              />
-            ))}
-        </Stack>
+          <Stack
+            direction="column"
+            alignItems="center"
+            spacing={2}
+            sx={{ width: '100%' }}
+          >
+            {/* Orders tasks according to their calculated score */}
+            {structuredClone(tasks)
+              .sort((a, b) => calculateTaskScore(b) - calculateTaskScore(a))
+              .map(task => (
+                <NoteCard
+                  key={task.id}
+                  task={task}
+                  onClick={() => navigate(`/StartTask/${task.id}`)}
+                  sx={{ width: '100%', maxWidth: 500 }}
+                />
+              ))}
+          </Stack>
+        </Box>
 
         <Fab
           color="primary"
@@ -63,15 +68,15 @@ const Home = () => {
           sx={{
             position: 'absolute',
             bottom: 16,
-            right: 16
+            right: 16,
+            zIndex: 1000
           }}
           aria-label="Add Task"
         >
           <AddIcon />
         </Fab>
-
-      </Stack>
-    </Stack>
+      </Box>
+    </Box>
   )
 }
 
