@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import FlowTimer from './FlowTimer'
 import PomodoroTimer from './PomodoroTimer'
 
-const Timer = ({ studyTechnique, studyDuration, learningIntervalTime, breakIntervalTime, isPaused, onTaskComplete }) => {
+const Timer = ({ studyTechnique, studyDuration, learningIntervalTime, breakIntervalTime, flowBreakRatio, isPaused, onTaskComplete }) => {
   // converting minutes to seconds for displayTime funtion
   if (studyTechnique === 'pomodoro') {
     return (
@@ -21,6 +21,7 @@ const Timer = ({ studyTechnique, studyDuration, learningIntervalTime, breakInter
   return (
     <FlowTimer
       studyDuration={studyDuration * 60}
+      breakRatio={flowBreakRatio}
       isPaused={isPaused}
       onTaskComplete={onTaskComplete}
     />
@@ -33,6 +34,7 @@ Timer.propTypes = {
   learningIntervalTime: PropTypes.number,
   breakIntervalTime: PropTypes.number,
   onTaskComplete: PropTypes.func,
+  flowBreakRatio: PropTypes.number,
   isPaused: PropTypes.bool
 }
 

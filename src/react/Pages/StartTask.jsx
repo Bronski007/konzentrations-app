@@ -82,6 +82,7 @@ const StartTask = () => {
   const [studyTechnique, setStudyTechnique] = useState('pomodoro')
   const [learningInterval, setLearningInterval] = useState(25)
   const [breakInterval, setBreakInterval] = useState(5)
+  const [flowBreakRatio, setFlowBreakRatio] = useState(5)
   const timerRef = useRef(null)
   const topRef = useRef(null)
   const navigate = useNavigate()
@@ -210,13 +211,35 @@ const StartTask = () => {
                     </Typography>
                   </Stack>}
                 { studyTechnique === 'flowmodoro' &&
+                <Stack sx={{ display: 'flex', alignItems: 'center' }}>
                   <Typography
                     variant="subtitle2"
                     color="textSecondary"
                     sx={{ margin: 1 }}
                   >
-                    Work in longer, flexible blocks to reach a deeper flow. Take breaks when it feels natural.
-                  </Typography>}
+                    Work in more flexible intervals to reach a deeper flow. Take breaks when it feels natural.
+                  </Typography>
+                  <Typography sx={{ margin: 1 }}>
+                    Gain
+                    {' '}
+                    <strong>1</strong>
+                    {' '}
+                    minute of break time for every
+                  </Typography>
+                  <Stack sx={{ display: 'flex', flexDirection: 'row' }}>
+                    <TextField
+                      defaultValue={5}
+                      onChange={(e) => setFlowBreakRatio(e.target.value)}
+                      disabled={timerStarted}
+                      slotProps={{ input: { endAdornment: <InputAdornment position="end">min</InputAdornment>,
+                        sx: { borderRadius: '2rem' } } }}
+                      sx={{ width: 150 }}
+                    />
+                    <Typography sx={{ margin: 1, marginTop: 2 }}>
+                      of studying.
+                    </Typography>
+                  </Stack>
+                </Stack>}
 
               </CardContent>
             </Card>
@@ -259,6 +282,7 @@ const StartTask = () => {
                 studyDuration={aproxTimeInMin}
                 learningIntervalTime={parseFloat(learningInterval)}
                 breakIntervalTime={parseFloat(breakInterval)}
+                flowBreakRatio={parseFloat(flowBreakRatio)}
                 isPaused={timerPaused}
                 onTaskComplete={handleTaskComplete}
               />}
